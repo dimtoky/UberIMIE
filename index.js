@@ -1,6 +1,6 @@
 const express = require('express');
 var bodyParser = require('body-parser');
-var router = require('./apiRouter').router;
+var router = require('./router').router;
 var cors = require('cors');
 
 const app = express();
@@ -13,7 +13,7 @@ app.use(cors());
 
 
 //configure routes
-server.use('/', router);
+app.use('/', router);
 
 
 
