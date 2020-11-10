@@ -1,6 +1,7 @@
 //Imports
 const express = require('express');
-var usersController = require('./controllers/usersController');
+const jwtUtils = require('./utils/jwt.utils');
+const usersController = require('./controllers/usersController');
 
 //Router
 exports.router = (function () {
@@ -12,7 +13,9 @@ exports.router = (function () {
     router.route('/users/login/').post(usersController.login);
 
     router.route('/users/frogotpswd/').post(usersController.forgotPassword);
-
+    
+    router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
 
     return router;
 })();
+

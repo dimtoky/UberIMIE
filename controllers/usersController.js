@@ -1,34 +1,79 @@
 //Imports
-var bcrypt = require('bcryptjs');
-var jwtUtils = require('../utils/jwt.utils');
-
-const NUMBER_REGEX = /^(0|(\+)?[1-9]{1}[0-9]{0,8}|(\+)?[1-3]{1}[0-9]{1,9}|(\+)?[4]{1}([0-1]{1}[0-9]{8}|[2]{1}([0-8]{1}[0-9]{7}|[9]{1}([0-3]{1}[0-9]{6}|[4]{1}([0-8]{1}[0-9]{5}|[9]{1}([0-5]{1}[0-9]{4}|[6]{1}([0-6]{1}[0-9]{3}|[7]{1}([0-1]{1}[0-9]{2}|[2]{1}([0-8]{1}[0-9]{1}|[9]{1}[0-5]{1})))))))))$/;
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=[^\d_].*?\d)\w(\w|[!@#$%]){7,20}/;
+const bcrypt = require('bcryptjs');
+const jwtUtils = require('../utils/jwt.utils');
+const User = require("../models/User");
+const { registerValidation, loginValidation } = require('../utils/validation');
 
 
 //Routes
 module.exports = {
-    register: function (req, res) {
-        //TO DO
 
-        return res.status(200).json({
-            //TO DO
-            'register': 'ok'
+    register: async (req, res) => {
+        let name = req.body.name
+        let email = req.body.email
+        let password = req.body.password
+
+
+        // validate the user
+        const { error } = registerValidation(req.body);
+        if (error)
+            return res.status(400).json({ error: error.details[0].message });
+
+
+        const isEmailExist = await User.findOne({ email: email });
+        if (isEmailExist)
+            return res.status(400).json({ error: "Email already exists" });
+
+        // hash the password
+        const salt = await bcrypt.genSalt(10);
+        const cryptedPassword = await bcrypt.hash(password, salt);
+
+        const user = new User({
+            name: name,
+            email: email,
+            password: cryptedPassword,
         });
+        try {
+            const savedUser = await user.save();
+            return res.status(200).json({ error: null, data: savedUser });
+        } catch (error) {
+            return res.status(400).json({ error });
+        }
+
+
 
     },
 
-    login: function (req, res) {
-        //TO DO
+    login: async (req, res) => {
+        let email = req.body.email
+        let password = req.body.password
 
-        return res.status(200).json({
-            //TO DO
+        // validate  user
+        const { error } = loginValidation(req.body);
+        // throw validation errors
+        if (error)
+            return res.status(400).json({ error: error.details[0].message });
 
-            'login': 'ok'
+        const user = await User.findOne({ email: email });
+        // throw error when email is wrong
+        if (!user)
+            return res.status(400).json({ error: "Email is wrong" });
+        // check for password correctness
+        const validPassword = await bcrypt.compare(password, user.password);
+
+        if (!validPassword)
+            return res.status(400).json({ error: "Password is wrong" });
+
+
+        const token = jwtUtils.generateTokenForUser(user)
+
+        res.status(200).json({
+            error: null,
+            data: {
+                message: "Login successful",
+                toker: token
+            },
         });
-
-
     },
 
 
@@ -44,7 +89,14 @@ module.exports = {
     },
 
 
-
+    test: (req, res) => {
+        res.json({
+            error: null,
+            data: {
+                success: "success"
+            },
+        });
+    },
 
 
 
