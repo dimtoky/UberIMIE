@@ -71,7 +71,7 @@ module.exports = {
             error: null,
             data: {
                 message: "Login successful",
-                toker: token
+                token: token
             },
         });
     },
