@@ -1,8 +1,8 @@
 import { withStyles, WithStyles } from "@material-ui/core";
 import * as React from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import styles,{ Styles } from "./style";
-import "./style.tsx";
+import styles,{ Styles } from "./Style";
+import "./Style.tsx";
 
 interface P {}
 export default class MapL extends React.PureComponent<P & WithStyles<Styles> > {
