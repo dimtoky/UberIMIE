@@ -11,28 +11,27 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import styles, { Styles } from './Style';
-import "./Style.tsx"
+import './Style.tsx';
 import Axios from 'axios';
 
 interface P {}
-interface S { 
-  id: number
-  email: string,
-  password: string
+interface S {
+  email: string
 }
-
-export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> {
+export default class ForgotPassword extends React.PureComponent<P & WithStyles<Styles>, S> {
   public state: Readonly<S>;
   public apiUrl: string = 'https://jsonplaceholder.typicode.com/todos';
 
   constructor(props: any) {
     super(props);
-    this.state = {id: 1, email: '',password: ''};
-    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {email: ''};
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
-  public static Display = withStyles(styles as any)(SignIn) as React.ComponentType<P>
+
+  public static Display = withStyles(styles as any)(ForgotPassword) as React.ComponentType<P>
+
   render() {
+    
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs">
@@ -42,12 +41,13 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Forgot Your Password ?
             </Typography>
-            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
+            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                    value={this.state.email}
                     variant="outlined"
                     required
                     fullWidth
@@ -55,20 +55,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    onChange={this.onChangeEmail}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={this.onChangePassword}
+                    onChange={this.handleChange}
                   />
                 </Grid>
               </Grid>
@@ -79,15 +66,8 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
                 color="primary"
                 className={classes.submit}
               >
-                Sign Up
+               Send
               </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/signUp" variant="body2">
-                    Don't have an account? Sign up
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </div>
           <Box mt={5}>
@@ -95,7 +75,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
           </Box>
         </Container>
       );
-    
+
       function Copyright() {
         return (
           <Typography variant="body2" color="textSecondary" align="center">
@@ -107,29 +87,22 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
             {'.'}
           </Typography>
         );
+      }
     }
-  }
-  onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const mail = event.target.value;
-    this.setState({
-      email: mail
-  });
-  }
-  onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const passwd = event.target.value;
-    this.setState({
-      password: passwd
-  });
-  }
 
-  onSubmit(event: any) {
-    event.preventDefault();
-    return (
-      Axios.post(this.apiUrl, this.state)
-      .then(response => console.log(response))
-    );
-  }
-  
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const mail = event.target.value;
+      this.setState({
+        email: mail
+    });
+    }
+
+    handleSubmit(event: any) {
+      event.preventDefault();
+      return (
+        Axios.post(this.apiUrl, this.state)
+        .then(response => console.log(response))
+      );
+    }
 }

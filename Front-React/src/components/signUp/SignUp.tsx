@@ -14,9 +14,33 @@ import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import styles, { Styles } from './Style';
 import "./Style.tsx"
+import Axios from 'axios';
 
 interface P {}
+interface S { 
+  id: number
+  lastName: string,
+  firstName: string
+  email: string,
+  password: string
+}
+
 export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> {
+  public state: Readonly<S>;
+  public apiUrl: string = 'https://jsonplaceholder.typicode.com/todos';
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      id: 1, 
+      lastName: '',
+      firstName: '',
+      email: '',
+      password: ''
+    };
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   public static Display = withStyles(styles as any)(SignUp) as React.ComponentType<P>
   render() {
     const { classes } = this.props;
@@ -30,7 +54,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -42,6 +66,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     id="firstName"
                     label="First Name"
                     autoFocus
+                    onChange={this.onChangeFirstName}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -53,6 +78,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
+                    onChange={this.onChangeLastName}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -64,6 +90,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    onChange={this.onChangeEmail}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -76,6 +103,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    onChange={this.onChangePassword}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -86,7 +114,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     name="confirm_password"
                     label="Confirm Password"
                     type="password"
-                    id="password"
+                    id="confirm_password"
                     autoComplete="current-password"
                   />
                 </Grid>
@@ -134,7 +162,43 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
           </Typography>
         );
     }
-    }
+  }
   
-  
+  onChangeFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const firstName = event.target.value;
+    this.setState({
+      firstName: firstName
+  });
+  }
+  onChangeLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const lastName = event.target.value;
+    this.setState({
+      lastName: lastName
+  });
+  }
+
+  onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const mail = event.target.value;
+    this.setState({
+      email: mail
+  });
+  }
+  onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const passwd = event.target.value;
+    this.setState({
+      password: passwd
+  });
+  }
+
+  onSubmit(event: any) {
+    event.preventDefault();
+    return (
+      Axios.post(this.apiUrl, this.state)
+      .then(response => console.log(response))
+    );
+  }
 }

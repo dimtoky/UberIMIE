@@ -5,8 +5,8 @@ import styles,{ Styles } from "./Style";
 import "./Style.tsx";
 
 interface P {}
-export default class MapL extends React.PureComponent<P & WithStyles<Styles> > {
-    public static Display = withStyles(styles as any)(MapL) as React.ComponentType<P>
+export default class Map extends React.PureComponent<P & WithStyles<Styles> > {
+    public static Display = withStyles(styles as any)(Map) as React.ComponentType<P>
     render(){
         const { classes } = this.props;
         const position: any = [51.505, -0.09];
