@@ -1,7 +1,7 @@
 export default interface UserInterface{
-    id?: any;
-    last_name?: string;
-    first_name?: number;
+    id?: number;
+    lastName?: string;
+    firstName?: string;
     email: string;
     password?: string;
 }

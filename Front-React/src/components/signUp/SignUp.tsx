@@ -15,28 +15,28 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './Style';
 import "./Style.tsx"
 import Axios from 'axios';
+import UserInterface from '../../Interfaces/userInterfaces';
 
 interface P {}
 interface S { 
-  id: number
-  lastName: string,
-  firstName: string
-  email: string,
-  password: string
+  user: UserInterface,
+  passwdStatus: boolean
 }
 
 export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> {
   public state: Readonly<S>;
   public apiUrl: string = 'https://jsonplaceholder.typicode.com/todos';
-
   constructor(props: any) {
     super(props);
     this.state = {
+      user: {
       id: 1, 
       lastName: '',
       firstName: '',
       email: '',
       password: ''
+      },
+      passwdStatus: false
     };
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -116,6 +116,8 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     type="password"
                     id="confirm_password"
                     autoComplete="current-password"
+                    onChange={this.onChangeConfirmPassword}
+                    
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -168,14 +170,18 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
     event.preventDefault();
     const firstName = event.target.value;
     this.setState({
-      firstName: firstName
+      user: {
+        firstName: firstName
+      }
   });
   }
   onChangeLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const lastName = event.target.value;
     this.setState({
-      lastName: lastName
+      user: {
+        lastName: lastName
+      }
   });
   }
 
@@ -183,22 +189,51 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
     event.preventDefault();
     const mail = event.target.value;
     this.setState({
-      email: mail
-  });
-  }
-  onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const passwd = event.target.value;
-    this.setState({
-      password: passwd
+      user: {
+        email: mail
+      }
   });
   }
 
-  onSubmit(event: any) {
+  onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    return (
-      Axios.post(this.apiUrl, this.state)
-      .then(response => console.log(response))
-    );
+    const passwd = event.target.value;
+      this.setState({
+        user: {
+          password: passwd
+        }
+    });
+  }
+
+  onChangeConfirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const confirmPasswd = event.target.value;
+    if(confirmPasswd === this.state.user.password) {  
+    this.setState({
+        passwdStatus: true
+    });
+    }
+    else {
+      this.setState({
+        passwdStatus: false 
+    });
+    }
+  }
+
+  onSubmit(event: any): any {
+    event.preventDefault();
+    if(this.state.passwdStatus) {
+      console.log(this.state.passwdStatus);
+      return (
+        Axios.post(this.apiUrl, this.state.user)
+        .then(response => {
+          console.log(response);
+        }
+        )
+        );
+    }
+    else {
+      console.log(this.state.passwdStatus);
+    }
   }
 }
