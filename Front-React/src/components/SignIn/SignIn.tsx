@@ -10,8 +10,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import styles, { Styles } from './Style';
-import "./Style.tsx"
+import styles, { Styles } from './styles';
+import "./styles.tsx"
 import Axios from 'axios';
 
 interface P {}

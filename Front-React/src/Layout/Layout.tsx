@@ -16,11 +16,11 @@ export class Layout extends React.PureComponent<P & WithStyles<Styles>,S >{
     render(){
         const { classes } = this.props;
         return(
-            <div>
+            <div className= {classes.layout}>
+                <div className={classes.headerBar}>
                 <HeaderBar.Display logo={()=>{ return (<img className={classes.logo} src={logo_uber} alt="Uber-Driver"/>) }}  name={ <div> </div> }/>
-                <div>
-                <Map.Display />
                 </div>
+                <Map.Display />
             </div>
         )
     }
