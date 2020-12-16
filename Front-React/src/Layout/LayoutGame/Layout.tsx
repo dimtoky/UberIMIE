@@ -5,6 +5,7 @@ import styles, { Styles } from "./styles";
 import { HeaderBar } from '../../components/HeaderBar/headerBar';
 import logo_uber from "../../icons/uber-driver-logo.png";
 import "./styles.tsx";
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 interface P {}
 interface S {}
@@ -21,6 +22,12 @@ export class LayoutGame extends React.PureComponent<P & WithStyles<Styles>,S >{
                 <HeaderBar.Display logo={()=>{ return (<img className={classes.logo} src={logo_uber} alt="Uber-Driver"/>) }}  name={ <div> </div> }/>
                 </div>
                 <Map.Display />
+
+                <BrowserRouter>
+                    <Switch>
+                        <Redirect to="/drive"/>
+                    </Switch>
+                </BrowserRouter>
             </div>
         )
     }

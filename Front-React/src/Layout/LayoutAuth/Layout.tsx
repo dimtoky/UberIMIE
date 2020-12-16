@@ -2,7 +2,7 @@ import * as React from 'react';
 import {withStyles, WithStyles } from '@material-ui/core';
 import styles, { Styles } from "./styles";
 import "./styles.tsx";
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import SignIn from '../../components/SignIn/SignIn';
 import SignUp from '../../components/signUp/SignUp';
 import ForgotPassword from '../../components/ForgotPassword/forgotPassword';
@@ -23,6 +23,7 @@ export class LayoutAuth extends React.PureComponent<P & WithStyles<Styles>,S >{
                 <Route exact={true} path='/auth/signIn' component={SignIn.Display}/>
                 <Route exact={true} path='/auth/signUp' component={SignUp.Display}/>
                 <Route exact={true} path= '/auth/forgotPassword' component={ForgotPassword.Display} />
+                <Redirect to="/auth/signIn"/>
                 </Switch>
             </div>
         )

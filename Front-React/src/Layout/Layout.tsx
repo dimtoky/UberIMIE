@@ -19,7 +19,7 @@ export class Layout extends React.PureComponent<P & WithStyles<Styles>,S >{
             <BrowserRouter>
                 <Switch>
                 <Route path='/auth' component={LayoutAuth.Display}/>
-                <Route exact={true} path='/drive' component={LayoutGame.Display}/>`
+                <Route path='/drive' component={LayoutGame.Display}/>
                 <Redirect to="/auth/signIn"/>
                 </Switch>
             </BrowserRouter>

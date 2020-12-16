@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx"
 import Axios from 'axios';
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 
 interface P {}
 interface S { 
@@ -100,6 +101,11 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
           <Box mt={5}>
             <Copyright />
           </Box>
+          <BrowserRouter>
+            <Switch>
+              <Redirect to="/auth/signIn"/>
+            </Switch>
+          </BrowserRouter>
         </Container>
       );
     
