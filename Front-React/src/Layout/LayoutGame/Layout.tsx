@@ -5,7 +5,7 @@ import styles, { Styles } from "./styles";
 import { HeaderBar } from '../../components/HeaderBar/headerBar';
 import logo_uber from "../../icons/uber-driver-logo.png";
 import "./styles.tsx";
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 
 interface P {}
 interface S {}
