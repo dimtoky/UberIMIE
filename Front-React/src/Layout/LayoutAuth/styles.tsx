@@ -4,7 +4,7 @@ export type Styles = "layout"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
     layout:{
         maxHeight: '100%',
-        height: '100vh',
+        height: '100vh'
     }
 });
 
