@@ -5,19 +5,17 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     layout:{
         maxHeight: '100%',
         height: '100vh'
-        
     },
     logo: {
         width: 'auto',
         height: '100px'
-        
     },
     map: {
         zIndex: 2
     },
     headerBar: {
         minHeight: '90px',
-        zIndex: 2,
+        zIndex: 2
     }
 });
 

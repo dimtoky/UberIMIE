@@ -15,7 +15,6 @@ export class LayoutAuth extends React.PureComponent<P & WithStyles<Styles>,S >{
     public static Display = withStyles(styles as any)(LayoutAuth) as React.ComponentType<P>
 
     render(){
-        console.log("layoutAuth");
         const { classes } = this.props;
         return(
             <div className= {classes.layout}>

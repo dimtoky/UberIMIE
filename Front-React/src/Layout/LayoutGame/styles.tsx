@@ -5,7 +5,6 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     layout:{
         maxHeight: '100%',
         height: '100vh'
-        
     },
     logo: {
         width: 'auto',
@@ -17,7 +16,7 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     },
     headerBar: {
         minHeight: '90px',
-        zIndex: 2,
+        zIndex: 2
     }
 });
 

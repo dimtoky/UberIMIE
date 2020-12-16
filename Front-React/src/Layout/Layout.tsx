@@ -14,7 +14,6 @@ export class Layout extends React.PureComponent<P & WithStyles<Styles>,S >{
     public static Display = withStyles(styles as any)(Layout) as React.ComponentType<P>
 
     render(){
-        console.log('layout');
         return(
             <BrowserRouter>
                 <Switch>
