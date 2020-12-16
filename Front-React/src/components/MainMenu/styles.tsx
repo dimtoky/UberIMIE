@@ -1,13 +1,13 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "root"|"media"|"expand"|"avatar"; // add class create
+export type Styles = "root"|"media"|"expand"|"avatar"|"input"|"subHeader"; // add class create
 const styles= (theme: Theme)=> createStyles<Styles, {}>({
     root: {
       display: 'block',
       position: 'relative',
-      width: '350px',
+      width: '380px',
       backgroundColor: '#000000',
-      height: '200px',
+      height: 'auto',
       color: '#ffffff',
       opacity: 0.8
     },
@@ -27,6 +27,17 @@ const styles= (theme: Theme)=> createStyles<Styles, {}>({
       backgroundColor: '#ffffff',
       color: '#000000'
     },
+    input: {
+      backgroundColor: '#ffffff',
+      borderRadius: '4px'
+      
+    },
+    subHeader: {
+      ' & span': {
+        color: '#ffffff'
+      }
+      
+    }
   })
 
 export default styles;
