@@ -99,7 +99,7 @@ module.exports = {
                 user.save()
                     .then(user => {
                         // send email
-                        let link = "http://localhost/api/auth/reset/" + user.resetPasswordToken;
+                        let link = "http://localhost:3000/api/auth/reset/" + user.resetPasswordToken;
                         const mailOptions = {
                             to: user.email,
                             from: 'dimension43@hotmail.fr',
