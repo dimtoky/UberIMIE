@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {withStyles, WithStyles } from '@material-ui/core';
-import Map from "../components/Map/map";
+import Map from "../components/map/map";
 import styles, { Styles } from "./styles";
 import { HeaderBar } from '../components/HeaderBar/headerBar';
 import logo_uber from "../icons/uber-driver-logo.png";

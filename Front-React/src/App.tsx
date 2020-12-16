@@ -5,7 +5,7 @@ import {
   BrowserRouter,
   Redirect
 } from "react-router-dom";
-import SignUp from "./components/SignUp/SignUp";
+import SignUp from "./components/signUp/SignUp";
 import SignIn from "./components/SignIn/SignIn";
 import ForgotPassword from "./components/ForgotPassword/forgotPassword";
 import { Layout } from "./Layout/Layout";
