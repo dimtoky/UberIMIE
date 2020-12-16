@@ -88,6 +88,13 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
                   </Link>
                 </Grid>
               </Grid>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link href="/forgotPassword" variant="body2">
+                    Forgot password ?
+                  </Link>
+                </Grid>
+              </Grid>
             </form>
           </div>
           <Box mt={5}>
