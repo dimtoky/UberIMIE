@@ -1,35 +1,32 @@
 //Imports
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-const JWT_SIGN_SECRET = 'WHmzEvKMuPeH2RRisyCC5kMJ8DvdONHAsSHpQj3pdYmFFSl5QseKrS5nIjiJ8Qa';
+const JWT_SIGN_SECRET = 'WHmzEvKMuPeH2R';
 
 //Exported functions
 module.exports = {
-    generateTokenForUser: function(userData){
-        return jwt.sign({
-            userId: userData.id,
-            isAdmin: userData.isAdmin
-        },
-        JWT_SIGN_SECRET,
-        {
-            expiresIn: '2h'
-        })
-    },
-
-    verifyJWTToken: function(token) 
-{
-  return new Promise((resolve, reject) =>
-  {
-    jwt.verify(token, JWT_SIGN_SECRET, (err, decodedToken) => 
+  generateTokenForUser: (userData) => jwt.sign({
+    name: userData.name,
+    id: userData._id,
+  },
+    JWT_SIGN_SECRET,
     {
-      if (err || !decodedToken)
-      {
-        return reject(err)
-      }
+      expiresIn: '24h'
+    }),
 
-      resolve(decodedToken)
-    })
-  })
-}
+
+
+  verifyJWTToken: (req, res, next) => {
+    const token = req.header("auth-token");
+    if (!token)
+      return res.status(401).json({ error: "Access denied" });
+    try {
+      const verified = jwt.verify(token,JWT_SIGN_SECRET);
+      req.user = verified;
+      next(); // to continue the flow
+    } catch (err) {
+      res.status(400).json({ error: "Token is not valid" });
+    }
+  }
 
 }
