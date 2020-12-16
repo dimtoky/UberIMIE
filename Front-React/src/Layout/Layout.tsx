@@ -14,11 +14,13 @@ export class Layout extends React.PureComponent<P & WithStyles<Styles>,S >{
     public static Display = withStyles(styles as any)(Layout) as React.ComponentType<P>
 
     render(){
+        console.log('layout');
         return(
             <BrowserRouter>
                 <Switch>
-                <Route   path='/auth/' component={LayoutAuth.Display}/>
-                <Route   path='/drive/' component={LayoutGame.Display}/>
+                <Route path='/auth' component={LayoutAuth.Display}/>
+                <Route exact={true} path='/drive' component={LayoutGame.Display}/>`
+                <Redirect to="/auth/signIn"/>
                 </Switch>
             </BrowserRouter>
         )

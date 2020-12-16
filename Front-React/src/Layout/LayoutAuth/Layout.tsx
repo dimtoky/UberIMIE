@@ -15,15 +15,16 @@ export class LayoutAuth extends React.PureComponent<P & WithStyles<Styles>,S >{
     public static Display = withStyles(styles as any)(LayoutAuth) as React.ComponentType<P>
 
     render(){
+        console.log("layoutAuth");
+        const { classes } = this.props;
         return(
-            <BrowserRouter>
+            <div className= {classes.layout}>
                 <Switch>
-                <Route path='/' component={SignIn.Display}/>
-                <Route path='/SignUp' component={SignUp.Display}/>
-                <Route path= '/forgotPassword' component={ForgotPassword.Display} />
-                <Redirect to="/"/>
+                <Route exact={true} path='/auth/signIn' component={SignIn.Display}/>
+                <Route exact={true} path='/auth/signUp' component={SignUp.Display}/>
+                <Route exact={true} path= '/auth/forgotPassword' component={ForgotPassword.Display} />
                 </Switch>
-            </BrowserRouter>
+            </div>
         )
     }
 

@@ -1,6 +1,6 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "paper" | "avatar" | "form" | "submit" ; // add class create
+export type Styles = "paper" | "avatar" | "form" | "submit"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
     paper: {
         paddingTop: theme.spacing(8),
@@ -17,8 +17,8 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
         marginTop: theme.spacing(3),
       },
       submit: {
-        margin: theme.spacing(3, 0, 2),
-      },
+        margin: theme.spacing(3, 0, 2)
+      }
 });
 
 export default styles;
