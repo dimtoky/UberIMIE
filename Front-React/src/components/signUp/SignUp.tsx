@@ -25,14 +25,13 @@ interface S {
 
 export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> {
   public state: Readonly<S>;
-  public apiUrl: string = 'https://jsonplaceholder.typicode.com/todos';
+  public apiUrl: string = 'http://localhost:3001/users/register';
   constructor(props: any) {
     super(props);
     this.state = {
       user: {
       id: 1, 
-      lastName: '',
-      firstName: '',
+      name: '',
       email: '',
       password: ''
       },
@@ -56,7 +55,7 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
             </Typography>
             <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
                     autoComplete="fname"
                     name="firstName"
@@ -66,21 +65,10 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                     id="firstName"
                     label="First Name"
                     autoFocus
-                    onChange={this.onChangeFirstName}
+                    onChange={this.onChangeName}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                    onChange={this.onChangeLastName}
-                  />
-                </Grid>
+            
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -166,31 +154,27 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
     }
   }
   
-  onChangeFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const firstName = event.target.value;
+    const name = event.target.value;
     this.setState({
       user: {
-        firstName: firstName
+        name: name,
+        email: this.state.user.email,
+        password: this.state.user.password
       }
   });
   }
-  onChangeLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const lastName = event.target.value;
-    this.setState({
-      user: {
-        lastName: lastName
-      }
-  });
-  }
+
 
   onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const mail = event.target.value;
     this.setState({
       user: {
-        email: mail
+        name : this.state.user.name,
+        email: mail,
+        password: this.state.user.password
       }
   });
   }
@@ -200,6 +184,8 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
     const passwd = event.target.value;
       this.setState({
         user: {
+          name : this.state.user.name,
+          email: this.state.user.email,
           password: passwd
         }
     });
@@ -223,13 +209,22 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
   onSubmit(event: any): any {
     event.preventDefault();
     if(this.state.passwdStatus) {
-      console.log(this.state.passwdStatus);
+      console.log(this.state);
       return (
-        Axios.post(this.apiUrl, this.state.user)
-        .then(response => {
-          console.log(response);
+        Axios.post(this.apiUrl, {
+        name: this.state.user.name,
+        email: this.state.user.email,
+        password: this.state.user.password
+    },{
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
         }
-        )
+}).then(response => { 
+	console.log(response)
+})
+.catch(error => {
+    console.log(error.response)
+})
         );
     }
     else {
