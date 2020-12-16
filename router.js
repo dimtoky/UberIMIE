@@ -12,7 +12,7 @@ exports.router = (function () {
 
     router.route('/users/login/').post(usersController.login);
 
-    router.route('/users/frogotpswd/').post(usersController.forgotPassword);
+    router.route('/users/forgotpswd/').post(usersController.forgotPassword);
     
     router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
 
