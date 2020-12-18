@@ -5,7 +5,7 @@ const User = require("../models/User");
 const { registerValidation, loginValidation } = require('../utils/validation');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey('secret');
 
 //Routes
 module.exports = {
