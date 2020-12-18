@@ -21,7 +21,7 @@ export class LayoutGame extends React.PureComponent<P & WithStyles<Styles>,S >{
                 <div className={classes.headerBar}>
                 <HeaderBar.Display logo={()=>{ return (<img className={classes.logo} src={logo_uber} alt="Uber-Driver"/>) }}  name={ <div> </div> }/>
                 </div>
-                <Map.Display />
+                    <Map.Display />
                 <BrowserRouter>
                     <Switch>
                         <Redirect to="/drive"/>

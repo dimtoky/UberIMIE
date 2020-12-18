@@ -33,7 +33,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S >{
                     name="address"
                     label="Address"
                     type="text"
-                    id=""
+                    id="address"
                     autoComplete="current-password"
                     className= {classes.input}
                   />
@@ -46,7 +46,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S >{
                     name="address"
                     label="Address"
                     type="text"
-                    id=""
+                    id="address2"
                     autoComplete="current-password"
                     className= {classes.input}
                   />
