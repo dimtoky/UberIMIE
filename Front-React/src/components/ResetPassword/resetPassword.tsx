@@ -13,9 +13,14 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx";
 import Axios from 'axios';
-import { RouteComponentProps } from "react-router-dom";
+import {
+  RouteComponentProps
+} from "react-router-dom";
 
-interface P {}
+
+type TParams =  { token: string };
+interface P {
+}
 interface S {
   password: string,
   resetToken: string,
@@ -23,22 +28,29 @@ interface S {
 }
 
 
-export default class ResetPassword extends React.PureComponent<P & WithStyles<Styles>, S, RouteComponentProps> {
+
+
+export default class ResetPassword extends React.PureComponent<P & WithStyles<Styles>, S> {
   public state: Readonly<S>;
-  public apiUrl: string = 'http://localhost:3001/users/forgotpswd/';
+  public apiUrl: string = 'http://localhost:3001/users/resetpswd/';
    
-  constructor(props: any, rprops: RouteComponentProps) {
+  constructor(props: any) {
     super(props);
-    super(rprops)
-    this.state = {  password: '',  resetToken: '' ,passwdStatus: false};
+    this.state = {  password: '',  resetToken: this.token(props) ,passwdStatus: false};
     this.handleSubmit = this.handleSubmit.bind(this);
-    
+    this.token(props);
+    console.log(this.state)
   }
+
+   token({ match }: RouteComponentProps<TParams>) {               
+     return match.params.token;
+   }
+
 
   public static Display = withStyles(styles as any)(ResetPassword) as React.ComponentType<P>
 
+  
   render() {
-    
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs">
@@ -48,7 +60,7 @@ export default class ResetPassword extends React.PureComponent<P & WithStyles<St
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Reset your Password
+              Reset your Password 
             </Typography>
             <form className={classes.form} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
               <Grid container spacing={2}>
