@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx"
 import Axios from 'axios';
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 
 interface P {}
 interface S { 
@@ -83,14 +84,14 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link href="/signUp" variant="body2">
+                  <Link href="/auth/signUp" variant="body2">
                     Don't have an account? Sign up
                   </Link>
                 </Grid>
               </Grid>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link href="/forgotPassword" variant="body2">
+                  <Link href="/auth/forgotPassword" variant="body2">
                     Forgot password ?
                   </Link>
                 </Grid>
@@ -100,6 +101,11 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
           <Box mt={5}>
             <Copyright />
           </Box>
+          <BrowserRouter>
+            <Switch>
+              <Redirect to="/auth/signIn"/>
+            </Switch>
+          </BrowserRouter>
         </Container>
       );
     

@@ -9,6 +9,7 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     logo: {
         width: 'auto',
         height: '100px'
+        
     },
     map: {
         zIndex: 2
