@@ -12,7 +12,10 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
         
     },
     map: {
-        zIndex: 2
+        zIndex: 1,
+        height: '100vh',
+        Maxheight: '100vh',
+        width: "auto"
     },
     headerBar: {
         minHeight: '90px',

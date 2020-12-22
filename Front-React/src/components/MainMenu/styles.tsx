@@ -1,6 +1,6 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "root"|"media"|"expand"|"avatar"|"input"|"subHeader"; // add class create
+export type Styles = "root"|"media"|"expand"|"avatar"|"input"|"subHeader"|"search"; // add class create
 const styles= (theme: Theme)=> createStyles<Styles, {}>({
     root: {
       display: 'block',
@@ -36,7 +36,10 @@ const styles= (theme: Theme)=> createStyles<Styles, {}>({
       ' & span': {
         color: '#ffffff'
       }
-      
+    },
+    search: {
+      zIndex: 2,
+      backgroundColor: 'white'
     }
   })
 
