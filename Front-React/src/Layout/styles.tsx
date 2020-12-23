@@ -1,8 +1,8 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "layout"|"logo"|"map"|"headerBar"; // add class create
+export type Styles = "layout" | "logo" | "map" | "headerBar"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
-    layout:{
+    layout: {
         maxHeight: '100%',
         height: '100vh'
     },

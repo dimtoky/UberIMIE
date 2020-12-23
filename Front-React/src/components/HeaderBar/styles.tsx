@@ -1,8 +1,8 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "headerBar"|"img"|"title"; // add class create
+export type Styles = "headerBar" | "img" | "title"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
-    headerBar:{
+    headerBar: {
         flexDirection: 'row',
         display: 'flex',
         minHeight: '64px',
@@ -18,9 +18,9 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     title: {
 
         justifyContent: 'space-between',
-        right:'0px'
+        right: '0px'
     }
-    
+
 });
 
 export default styles;
