@@ -5,6 +5,7 @@ const User = require("../models/User");
 const { registerValidation, loginValidation } = require('../utils/validation');
 
 const sgMail = require('@sendgrid/mail');
+const { dijkstra } = require('../utils/dijkstra.utils');
 sgMail.setApiKey('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');
 
 //Routes
@@ -168,7 +169,9 @@ module.exports = {
                     });
                 });
             });
+    },
+
+    dijkstraTest : () => {
+        dijkstra();
     }
-
-
 }

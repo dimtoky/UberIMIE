@@ -15,7 +15,9 @@ exports.router = (function () {
     router.route('/users/forgotpswd/').post(usersController.forgotPassword);
     
     router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
-
+    
+    router.route('/test/').get(usersController.dijkstraTest);
+    
     return router;
 })();
 
