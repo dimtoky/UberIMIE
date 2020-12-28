@@ -16,7 +16,7 @@ exports.router = (function () {
     
     router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
     
-    router.route('/test/').get(usersController.dijkstraTest);
+    router.route('/test/').post(usersController.dijkstraTest);
     
     return router;
 })();

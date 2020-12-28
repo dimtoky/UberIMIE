@@ -171,7 +171,10 @@ module.exports = {
             });
     },
 
-    dijkstraTest : () => {
-        dijkstra();
+    // @route POST test/
+    // @desc  dijsktra algorithm
+    // @access Public
+    dijkstraTest : async (req,res) => {
+        dijkstra(req.body.start,req.body.coords,req.body.len)
     }
 }
