@@ -20,7 +20,7 @@ interface S {
 }
 export default class ForgotPassword extends React.PureComponent<P & WithStyles<Styles>, S> {
   public state: Readonly<S>;
-  public apiUrl: string = 'https://jsonplaceholder.typicode.com/todos';
+  public apiUrl: string = 'http://localhost:3001/users/forgotpswd/';
 
   constructor(props: any) {
     super(props);
@@ -101,8 +101,18 @@ export default class ForgotPassword extends React.PureComponent<P & WithStyles<S
     handleSubmit(event: any) {
       event.preventDefault();
       return (
-        Axios.post(this.apiUrl, this.state)
-        .then(response => console.log(response))
+        Axios.post(this.apiUrl, {
+          email: this.state.email,
+      },{
+          headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+          }
+  }).then(response => { 
+    console.log(response)
+  })
+  .catch(error => {
+      console.log(error.response)
+  })
       );
     }
 }

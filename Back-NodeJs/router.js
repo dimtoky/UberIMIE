@@ -15,6 +15,8 @@ exports.router = (function () {
 
     router.route('/users/forgotpswd/').post(usersController.forgotPassword);
 
+    router.route('/users/resetpswd/').post(usersController.resetPassword);
+    
     router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
 
     // Itinary routes

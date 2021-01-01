@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 
 mongoose.connect(
-    "mongodb+srv://root:wamwnz11DmcpxtDq@clusterimie.euvgs.mongodb.net/imiebd?retryWrites=true&w=majority",
+    "sercret",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,6 +28,6 @@ app.use('/', router);
 
 
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('Listening on port 3000');
 });

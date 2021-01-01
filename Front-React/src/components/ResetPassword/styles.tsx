@@ -3,7 +3,7 @@ import { createStyles, Theme } from "@material-ui/core";
 export type Styles = "paper" | "avatar" | "form" | "submit" ; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
     paper: {
-        paddingTop: theme.spacing(8),
+        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
