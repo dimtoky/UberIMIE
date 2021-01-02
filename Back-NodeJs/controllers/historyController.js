@@ -29,8 +29,8 @@ module.exports = {
             email: email
         });
         try {
-            const savedUser = history.save();
-            return res.status(200).json({ error: null, data: savedUser });
+            const savedHistory = history.save();
+            return res.status(200).json({ error: null, data: savedHistory });
         } catch (error) {
             return res.status(400).json({ error });
         }
@@ -68,13 +68,13 @@ module.exports = {
         //         token: token
         //     },
         // });
-        console.log(email);
+        console.log(emails);
         const history = new History({
-            email: email,
+            email: emails
         });
         try {
-            const savedUser = await history.save();
-            return res.status(200).json({ error: null, data: savedUser });
+            const savedHistory = await history.save();
+            return res.status(200).json({ error: null, data: savedHistory });
         } catch (error) {
             return res.status(400).json({ error });
         }
