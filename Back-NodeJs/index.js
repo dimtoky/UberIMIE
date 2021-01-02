@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 
 mongoose.connect(
-    "secret",
+    "sercret",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

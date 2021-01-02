@@ -11,28 +11,45 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
-import "./styles.tsx"
+import "./styles.tsx";
 import Axios from 'axios';
-import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
+import {
+  RouteComponentProps
+} from "react-router-dom";
 
-interface P {}
-interface S { 
-  id: number
-  email: string,
-  password: string
+
+type TParams =  { token: string };
+interface P {
+}
+interface S {
+  password: string,
+  resetToken: string,
+  passwdStatus: boolean
 }
 
-export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> {
-  public state: Readonly<S>;
-  public apiUrl: string = 'http://localhost:3001/users/login/';
 
+
+
+export default class ResetPassword extends React.PureComponent<P & WithStyles<Styles>, S> {
+  public state: Readonly<S>;
+  public apiUrl: string = 'http://localhost:3001/users/resetpswd/';
+   
   constructor(props: any) {
     super(props);
-    this.state = {id: 1, email: '',password: ''};
-    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {  password: '',  resetToken: this.token(props) ,passwdStatus: false};
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.token(props);
+    console.log(this.state)
   }
+
+   token({ match }: RouteComponentProps<TParams>) {               
+     return match.params.token;
+   }
+
+
+  public static Display = withStyles(styles as any)(ResetPassword) as React.ComponentType<P>
+
   
-  public static Display = withStyles(styles as any)(SignIn) as React.ComponentType<P>
   render() {
     const { classes } = this.props;
     return (
@@ -43,24 +60,12 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Reset your Password 
             </Typography>
-            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
+            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    onChange={this.onChangeEmail}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
+                <TextField
                     variant="outlined"
                     required
                     fullWidth
@@ -72,6 +77,20 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
                     onChange={this.onChangePassword}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="confirm_password"
+                    label="Confirm Password"
+                    type="password"
+                    id="confirm_password"
+                    autoComplete="current-password"
+                    onChange={this.onChangeConfirmPassword}
+                    
+                  />
+                </Grid>
               </Grid>
               <Button
                 type="submit"
@@ -80,35 +99,16 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
                 color="primary"
                 className={classes.submit}
               >
-                Sign Up
+               Send
               </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/auth/signUp" variant="body2">
-                    Don't have an account? Sign up
-                  </Link>
-                </Grid>
-              </Grid>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/auth/forgotPassword" variant="body2">
-                    Forgot password ?
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </div>
           <Box mt={5}>
             <Copyright />
           </Box>
-          <BrowserRouter>
-            <Switch>
-              <Redirect to="/auth/signIn"/>
-            </Switch>
-          </BrowserRouter>
         </Container>
       );
-    
+
       function Copyright() {
         return (
           <Typography variant="body2" color="textSecondary" align="center">
@@ -120,43 +120,49 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
             {'.'}
           </Typography>
         );
+      }
     }
-  }
-  onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const mail = event.target.value;
-    this.setState({
-      email: mail
-  });
-  }
+
+    
   onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const passwd = event.target.value;
-    this.setState({
-      password: passwd
-  });
+      this.setState({
+          password: passwd
+    });
   }
 
-  onSubmit(event: any) {
+  onChangeConfirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    console.log(this.state.email);
-    return (
-      
-      Axios.post(this.apiUrl, {
-        email: this.state.email,
-        password: this.state.password
-    },{
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
-        }
-}).then(response => { 
-	console.log(response)
-})
-.catch(error => {
-    console.log(error.response)
-})
-      
-    )
+    const confirmPasswd = event.target.value;
+    if(confirmPasswd === this.state.password) {  
+    this.setState({
+        passwdStatus: true
+    });
+    }
+    else {
+      this.setState({
+        passwdStatus: false 
+    });
+    }
   }
-  
+
+    handleSubmit(event: any) {
+      event.preventDefault();
+      return (
+        Axios.post(this.apiUrl, {
+          password: this.state.password,
+          token: this.state.resetToken,
+      },{
+          headers: {
+              'Content-Type': 'application/json; charset=UTF-8'
+          }
+  }).then(response => { 
+    console.log(response)
+  })
+  .catch(error => {
+      console.log(error.response)
+  })
+      );
+    }
 }
