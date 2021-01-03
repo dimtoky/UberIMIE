@@ -88,13 +88,13 @@ module.exports = {
     },
 
     forgotPassword: (req, res) => {
-        User.findOne({email: req.body.email})
+        User.findOne({ email: req.body.email })
             .then(user => {
-                if (!user) return res.status(401).json({message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.'});
-    
+                if (!user) return res.status(401).json({ message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.' });
+
                 //Generate and set password reset token
                 user.generatePasswordReset();
-    
+
                 // Save the updated user object
                 user.save()
                     .then(user => {
@@ -110,33 +110,33 @@ module.exports = {
                             <p style="text-align: center">Si tu n'as pas demandé un nouveau mot de passe, ignore cet e-mail.</p>
                                `,
                         };
-    
+
                         sgMail.send(mailOptions, (error, result) => {
-                            if (error) return res.status(500).json({message: error.message});
-    
-                            res.status(200).json({message: 'A reset email has been sent to ' + user.email + '.'});
+                            if (error) return res.status(500).json({ message: error.message });
+
+                            res.status(200).json({ message: 'A reset email has been sent to ' + user.email + '.' });
                         });
                     })
-                    .catch(err => res.status(500).json({message: err.message}));
+                    .catch(err => res.status(500).json({ message: err.message }));
             })
-            .catch(err => res.status(500).json({message: err.message}));
+            .catch(err => res.status(500).json({ message: err.message }));
     },
-    
+
     // @route POST api/auth/reset
     // @desc Reset Password - Validate password reset token and shows the password reset view
     // @access Public
     reset: (req, res) => {
-        User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
+        User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
             .then((user) => {
-                if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
-    
+                if (!user) return res.status(401).json({ message: 'Password reset token is invalid or has expired.' });
+
                 //Redirect user to form with the email address
-                res.render('reset', {user});
+                res.render('reset', { user });
             })
-            .catch(err => res.status(500).json({message: err.message}));
+            .catch(err => res.status(500).json({ message: err.message }));
     },
-    
-    
+
+
     // @route POST api/auth/reset
     // @desc Reset Password
     // @access Public
@@ -147,17 +147,17 @@ module.exports = {
 
         User.findOne({resetPasswordToken: token, resetPasswordExpires: {$gt: Date.now()}})
             .then((user) => {
-                if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
-    
+                if (!user) return res.status(401).json({ message: 'Password reset token is invalid or has expired.' });
+
                 //Set the new password
                 user.password = req.body.password;
                 user.resetPasswordToken = undefined;
                 user.resetPasswordExpires = undefined;
-    
+
                 // Save
                 user.save((err) => {
-                    if (err) return res.status(500).json({message: err.message});
-    
+                    if (err) return res.status(500).json({ message: err.message });
+
                     // send email
                     const mailOptions = {
                         to: user.email,
@@ -166,15 +166,13 @@ module.exports = {
                         text: `Hi ${user.username} \n 
                         Nous vous confirmons que le mot de passe associé à la boite mail ${user.email} a été modifié avec succés.\n`
                     };
-    
+
                     sgMail.send(mailOptions, (error, result) => {
-                        if (error) return res.status(500).json({message: error.message});
-    
-                        res.status(200).json({message: 'Your password has been updated.'});
+                        if (error) return res.status(500).json({ message: error.message });
+
+                        res.status(200).json({ message: 'Your password has been updated.' });
                     });
                 });
             });
     }
-
-
 }
