@@ -40,7 +40,7 @@ module.exports = {
     },
 
     newHistory: async (req, res) => {
-        let email = req.body.email
+        let emails = req.body.email
         // let password = req.body.password
         // // validate  user
         // const { error } = loginValidation(req.body);

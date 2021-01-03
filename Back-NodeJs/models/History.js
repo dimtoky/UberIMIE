@@ -5,13 +5,12 @@ const historySchema = new mongoose.Schema({
     type: String,
     required: true,
     min: 6,
-    max: 255,
+    max: 255
   },
   date: {
-    type: Date,
-    default: Date.now,
-  }
+    type: Date
+    }
 });
 
 
-module.exports = mongoose.model("History", historySchema);
+module.exports = mongoose.model("HistoryUser", historySchema);
