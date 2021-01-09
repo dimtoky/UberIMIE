@@ -33,10 +33,8 @@ export default class Map extends React.PureComponent<P & WithStyles<Styles>, S> 
             zoom: this.state.zoom // Starting zoom level,
         });
         return (
-            <div className={classes.container}>
-                <div id="test" className={classes.mainMenu}>
-                    <MainMenu.Display />
-                </div>
+            <div>
+               
             </div>
         )
     }

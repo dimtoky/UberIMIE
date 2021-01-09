@@ -1,10 +1,9 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "layout" | "logo" | "map" | "headerBar"; // add class create
+export type Styles = "layout" | "logo" | "map" | "headerBar" | "mainMenu"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
     layout: {
-        maxHeight: '100%',
-        height: '100vh'
+        height: '100%'
     },
     logo: {
         width: 'auto',
@@ -12,15 +11,22 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
 
     },
     map: {
-        zIndex: 1,
-        height: '100vh',
-        Maxheight: '100vh',
-        width: "auto"
+        top: '0px',
+        height: '100%',
+        width: '70%',
+        left: '30%'
     },
     headerBar: {
-        minHeight: '90px',
-        zIndex: 2
-    }
+        height: '90px'
+    },
+    mainMenu: {
+        top: '90px',
+        marginLeft: '0px',
+        position: 'absolute',
+        minHeight: '200px',
+        height: '100%',
+        width: '30%'
+      }
 });
 
 export default styles;

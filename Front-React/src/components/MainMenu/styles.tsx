@@ -1,15 +1,15 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "root" | "media" | "expand" | "avatar" | "input" | "subHeader" | "search"; // add class create
+export type Styles = "root" | "media" | "expand" | "avatar" | "input" | "subHeader" | "iconButton"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
   root: {
     display: 'block',
     position: 'relative',
-    width: '380px',
     backgroundColor: '#000000',
-    height: 'auto',
-    color: '#ffffff',
-    opacity: 0.8
+    height: '100%',
+    color: 'white',
+    opacity: 0.9,
+    borderRadius: 0
   },
   media: {
     height: '0px',
@@ -24,22 +24,24 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
   },
   avatar: {
     margin: '10px',
-    backgroundColor: '#ffffff',
+    backgroundColor: 'white',
     color: '#000000'
   },
   input: {
-    backgroundColor: '#ffffff',
-    borderRadius: '4px'
+    backgroundColor: 'white',
+    borderRadius: '4px',
+    color: 'black'
 
   },
   subHeader: {
     ' & span': {
-      color: '#ffffff'
+      color: 'white'
     }
   },
-  search: {
-    zIndex: 2,
-    backgroundColor: 'white'
+  iconButton: {
+    padding: 10,
+    backgroundColor: 'white',
+    color: 'blue'
   }
 })
 

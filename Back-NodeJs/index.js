@@ -7,7 +7,7 @@ const cors = require('cors');
 const app = express();
 
 mongoose.connect(
-    "sercret",
+    "mongodb+srv://root:wamwnz11DmcpxtDq@clusterimie.euvgs.mongodb.net/imiebd?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

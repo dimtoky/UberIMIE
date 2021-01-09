@@ -31,6 +31,7 @@ const dijkstra = async (startPosition, tabCoord, len) => {
                 }));
         }
         result.push(minDuration)
+        console.log(minDuration.waypoints)
         tabLen--;
         tab.splice(indexMinDuration, 1);
         nbRoutes--;
