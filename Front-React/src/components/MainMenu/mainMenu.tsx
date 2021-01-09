@@ -3,21 +3,23 @@ import { Button, Card, CardContent, CardHeader, IconButton, TextField, withStyle
 import styles, { Styles } from './styles';
 import Avatar from '@material-ui/core/Avatar';
 import { coordonees } from '../../Interfaces/coordonnees';
-import Axios from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import Select from 'react-select';
+import { start } from 'repl';
 
 interface P { }
 interface S {
   addresses: coordonees[],
+  start: coordonees
   addressChoice: string,
   tabAdressesName: AddressType[]
 }
-// interface  {
-//   inputValue?: string;
-//   address: string;
-// }
+interface ItinaryQuery{
+  start: coordonees;
+  coords: coordonees[];
+}
 
 interface AddressType {
   value: coordonees;
@@ -30,6 +32,10 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
   constructor(props: any) {
     super(props);
     this.state = {
+      start: {
+        lng: 0,
+        lat: 0
+      },
       addresses: [],
       addressChoice: '',
       tabAdressesName: []
@@ -61,7 +67,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
               onChange={(event) => this.setState({
                 addressChoice: event.target.value,
                 tabAdressesName: this.state.tabAdressesName,
-                addresses: this.state.addresses
+                addresses: this.state.addresses,
+                start: this.state.start
               })}
               className={classes.input}
             />
@@ -79,7 +86,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                 this.setState({
                   addressChoice: event.label,
                   tabAdressesName: this.state.tabAdressesName,
-                  addresses: tab
+                  addresses: this.state.addresses,
+                  start: event.value
                 })
                 console.log(this.state.addresses)
               }
@@ -94,7 +102,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
               onChange={(event) => this.setState({
                 addressChoice: event.target.value,
                 tabAdressesName: this.state.tabAdressesName,
-                addresses: this.state.addresses
+                addresses: this.state.addresses,
+                start: this.state.start
               })}
               className={classes.input}
             />
@@ -113,7 +122,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                 this.setState({
                   addressChoice: event.label,
                   tabAdressesName: this.state.tabAdressesName,
-                  addresses: tab
+                  addresses: this.state.addresses,
+                  start: this.state.start
                 })
                 console.log(this.state.addresses)
               }
@@ -121,6 +131,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             }
           >
           </Select>
+          <Button onClick={this.searchItinary} className={classes.iconButton}> Valider</Button>
         </CardContent>
       </Card>
     );
@@ -149,15 +160,33 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     this.setState({
       addressChoice: this.state.addressChoice,
       tabAdressesName: tab,
-      addresses: this.state.addresses
+      addresses: this.state.addresses,
+      start: this.state.start
     })
   }
   handleChange = (selectedOption: AddressType) => {
     this.setState({
       addressChoice: selectedOption.label,
       tabAdressesName: this.state.tabAdressesName,
-      addresses: this.state.addresses
+      addresses: this.state.addresses,
+      start: this.state.start
     });
     console.log(`Option selected:`, selectedOption);
   };
+
+  searchItinary = () => {
+      var params: ItinaryQuery = {
+        start: this.state.start,
+        coords: this.state.addresses
+      };
+      var request: AxiosRequestConfig = {
+        params: params
+      }
+    Axios.get('http://127.0.0.1:3001/itinary', request)
+    .then(function (response) {
+      console.log(response)
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
 }
