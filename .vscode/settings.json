@@ -6,7 +6,6 @@
         "Front-React/.DS_Store": true,
         "Back-NodeJs/.DS_Store": true,
         "Front-React/src/.DS_Store": true,
-        "**/*.http": true,
         "**/node_modules": true
     }
 }

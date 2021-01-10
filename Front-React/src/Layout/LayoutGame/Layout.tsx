@@ -8,12 +8,13 @@ import "./styles.tsx";
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import { MapContainer } from 'react-leaflet';
 import { MainMenu } from '../../components/MainMenu/mainMenu';
+import mapboxgl from 'mapbox-gl';
 
-interface P { }
-interface S { }
+interface P {}
+interface S { 
+}
 
 export class LayoutGame extends React.PureComponent<P & WithStyles<Styles>, S>{
-
     public static Display = withStyles(styles as any)(LayoutGame) as React.ComponentType<P>
 
     render() {
@@ -26,9 +27,7 @@ export class LayoutGame extends React.PureComponent<P & WithStyles<Styles>, S>{
                 <MapContainer id="map" className={classes.map}>
                     <Map.Display />
                 </MapContainer>
-                <div id="geocoding" className={classes.mainMenu}>
-                    <MainMenu.Display />
-                </div>
+                
                 <BrowserRouter>
                     <Switch>
                         <Redirect to="/drive" />

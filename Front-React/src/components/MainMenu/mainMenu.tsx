@@ -3,24 +3,19 @@ import { Button, Card, CardContent, CardHeader, IconButton, TextField, withStyle
 import styles, { Styles } from './styles';
 import Avatar from '@material-ui/core/Avatar';
 import { coordonees } from '../../Interfaces/coordonnees';
-import Axios, { AxiosRequestConfig } from 'axios';
+import Axios from 'axios';
 import SearchIcon from '@material-ui/icons/Search';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import Select from 'react-select';
-import { start } from 'repl';
+import mapboxgl from 'mapbox-gl';
 
-interface P { }
+interface P { mapLine: (coords: Array<any>) => void }
 interface S {
   addresses: coordonees[],
   start: coordonees
   addressChoice: string,
   tabAdressesName: AddressType[]
 }
-interface ItinaryQuery{
-  start: coordonees;
-  coords: coordonees[];
-}
-
 interface AddressType {
   value: coordonees;
   label: string;
@@ -44,7 +39,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
 
   render() {
     const filter = createFilterOptions<AddressType>();
-    const { classes } = this.props;
+    const { classes, mapLine } = this.props;
     return (
       <Card className={classes.root}>
         <CardHeader
@@ -59,58 +54,60 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         />
 
         <CardContent>
-         
-            <TextField
-              label="Address..."
-              variant="outlined"
-              InputProps={{ type: 'search' }}
-              onChange={(event) => this.setState({
-                addressChoice: event.target.value,
-                tabAdressesName: this.state.tabAdressesName,
-                addresses: this.state.addresses,
-                start: this.state.start
-              })}
-              className={classes.input}
-            />
-            <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
-              <SearchIcon />
-            </IconButton>
-            <Select
+
+          <TextField
+            label="Address..."
+            variant="outlined"
+            InputProps={{ type: 'search' }}
+            onChange={(event) => this.setState({
+              addressChoice: event.target.value,
+              tabAdressesName: this.state.tabAdressesName,
+              addresses: this.state.addresses,
+              start: this.state.start
+            })}
+            className={classes.input}
+          />
+          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
+            <SearchIcon />
+          </IconButton>
+          <Select
+            menuPortalTarget={document.body}
+            menuPosition={'fixed'}
             isSearchable
             options={this.state.tabAdressesName}
-            className={classes.input}
+            className={classes.select}
             onChange={(event) => {
               if (event) {
-                var tab = this.state.addresses;
-                tab.push(event.value)
                 this.setState({
-                  addressChoice: event.label,
+                  addressChoice: this.state.addressChoice,
                   tabAdressesName: this.state.tabAdressesName,
                   addresses: this.state.addresses,
                   start: event.value
                 })
-                console.log(this.state.addresses)
               }
             }
             }
+
           >
           </Select>
           <TextField
-              label="Address..."
-              variant="outlined"
-              InputProps={{ type: 'search' }}
-              onChange={(event) => this.setState({
-                addressChoice: event.target.value,
-                tabAdressesName: this.state.tabAdressesName,
-                addresses: this.state.addresses,
-                start: this.state.start
-              })}
-              className={classes.input}
-            />
-            <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
-              <SearchIcon />
-            </IconButton>
-            <Select
+            label="Address..."
+            variant="outlined"
+            InputProps={{ type: 'search' }}
+            onChange={(event) => this.setState({
+              addressChoice: event.target.value,
+              tabAdressesName: this.state.tabAdressesName,
+              addresses: this.state.addresses,
+              start: this.state.start
+            })}
+            className={classes.input}
+          />
+          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
+            <SearchIcon />
+          </IconButton>
+          <Select
+            menuPortalTarget={document.body}
+            menuPosition={'fixed'}
             isSearchable
             options={this.state.tabAdressesName}
             className={classes.input}
@@ -122,7 +119,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                 this.setState({
                   addressChoice: event.label,
                   tabAdressesName: this.state.tabAdressesName,
-                  addresses: this.state.addresses,
+                  addresses: tab,
                   start: this.state.start
                 })
                 console.log(this.state.addresses)
@@ -131,7 +128,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             }
           >
           </Select>
-          <Button onClick={this.searchItinary} className={classes.iconButton}> Valider</Button>
+          <Button onClick={() => this.searchItinary(mapLine)} className={classes.iconButton}> Valider</Button>
         </CardContent>
       </Card>
     );
@@ -147,7 +144,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           addressResponse = response.data.features;
           for (var addr of addressResponse) {
             tab.push({
-              value: {lat: addr.geometry.coordinates[0],lng: addr.geometry.coordinates[1]},
+              value: { lat: addr.geometry.coordinates[1], lng: addr.geometry.coordinates[0] },
               label: addr.place_name
 
             });
@@ -174,19 +171,20 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     console.log(`Option selected:`, selectedOption);
   };
 
-  searchItinary = () => {
-      var params: ItinaryQuery = {
-        start: this.state.start,
-        coords: this.state.addresses
-      };
-      var request: AxiosRequestConfig = {
-        params: params
-      }
-    Axios.get('http://127.0.0.1:3001/itinary', request)
-    .then(function (response) {
-      console.log(response)
-    }).catch(function (error) {
-      console.error(error);
-    });
+  searchItinary = (mapLineFunction: any) => {
+    console.log(this.state.start)
+    Axios.post('http://127.0.0.1:3001/itinary', {
+      start: this.state.start,
+      coords: this.state.addresses,
+      len: this.state.addresses.length
+    })
+      .then(function (response) {
+        mapLineFunction(response.data.itinary[0].routes[0].geometry.coordinates)
+        console.log(response.data.itinary[0])
+      }).catch(function (error) {
+        console.error(error);
+      });
   }
+
 }
+

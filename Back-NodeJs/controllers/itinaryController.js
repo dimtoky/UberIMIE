@@ -6,9 +6,10 @@ module.exports = {
     // @access Public
     dijkstraTest: async (req, res) => {
         console.log("Compute itinary...");
+        console.log(req)
         const result = await dijkstra(req.body.start, req.body.coords, req.body.len)
         res.status(200).json({
-            data: result
+            itinary: result
         })
         console.log("Itinary: OK");
     }

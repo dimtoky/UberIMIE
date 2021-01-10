@@ -11,9 +11,10 @@ const dijkstra = async (startPosition, tabCoord, len) => {
     let indexMinDuration;
     while ((nbRoutes) > 0) {
         for (let i = 0; i < tabLen; i++) {
-            tab.push(await (axios.get("https://api.mapbox.com/directions/v5/mapbox/driving/" + lng + "," + lat + ";" + String(tab[i].lng) + "," + String(tab[i].lat) + ",38.91?alternatives=false&geometries=geojson&steps=true&language=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A"))
+            tab.push(await (axios.get("https://api.mapbox.com/directions/v5/mapbox/driving/" + lng + "," + lat + ";" + String(tab[i].lng) + "," + String(tab[i].lat) + "?alternatives=false&geometries=geojson&steps=true&language=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A"))
                 .then(resp => {
                     if (resp.status == 200) {
+                        console.log(resp.data.waypoints)
                         if (minDuration == undefined) {
                             minDuration = resp.data;
                             min = minDuration.routes[0].duration; //il faut check si routes == undifened
@@ -26,7 +27,7 @@ const dijkstra = async (startPosition, tabCoord, len) => {
                     }
                     else {
                         // a voir
-                        print(resp);
+                        console.log(resp);
                     }
                 }));
         }
