@@ -19,7 +19,8 @@ interface P {}
 interface S { 
   id: number
   email: string,
-  password: string
+  password: string,
+  redirect: boolean
 }
 
 export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> {
@@ -28,13 +29,18 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
 
   constructor(props: any) {
     super(props);
-    this.state = {id: 1, email: '',password: ''};
+    this.state = {id: 1, email: '',password: '', redirect: false};
     this.onSubmit = this.onSubmit.bind(this);
   }
   
   public static Display = withStyles(styles as any)(SignIn) as React.ComponentType<P>
   render() {
     const { classes } = this.props;
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to='/drive'/>;
+    }
     return (
       <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -150,7 +156,9 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
             'Content-Type': 'application/json; charset=UTF-8'
         }
 }).then(response => { 
-	console.log(response)
+  console.log("success" + response.data.data.token)
+  localStorage.setItem('token', response.data.data.token);
+  this.setState({ redirect: true })
 })
 .catch(error => {
     console.log(error.response)
