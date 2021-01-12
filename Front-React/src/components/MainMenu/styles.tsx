@@ -9,7 +9,9 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     height: '100%',
     color: 'white',
     opacity: 0.9,
-    borderRadius: 0
+    borderRadius: 0,
+    zIndex: 1,
+    overflow: 'hidden'
   },
   media: {
     height: '0px',
@@ -30,7 +32,8 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
   input: {
     backgroundColor: 'white',
     borderRadius: '4px',
-    color: 'black'
+    color: 'black',
+    margin: '10px'
 
   },
   subHeader: {

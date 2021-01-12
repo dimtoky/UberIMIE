@@ -24,7 +24,7 @@ export class LayoutGame extends React.PureComponent<P & WithStyles<Styles>, S>{
                 <div className={classes.headerBar}>
                     <HeaderBar.Display logo={() => { return (<img className={classes.logo} src={logo_uber} alt="Uber-Driver" />) }} name={<div> </div>} />
                 </div>
-                <MapContainer id="map" className={classes.map}>
+                <MapContainer id="map" className={classes.map} center={[2.3488, 48.8534]} zoom={6}>
                     <Map.Display />
                 </MapContainer>
                 

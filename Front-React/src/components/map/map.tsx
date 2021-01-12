@@ -3,79 +3,90 @@ import * as React from "react";
 import { MainMenu } from "../MainMenu/mainMenu";
 import styles, { Styles } from "./styles";
 import "./styles.tsx";
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from "mapbox-gl";
 
 interface P { }
 interface S {
-    coords: Array<any>
+    coords: Array<any>;
+    center: [number, number];
+    zoom: number;
 }
-export default class Map extends React.PureComponent<P & WithStyles<Styles>, S> {
-    public static Display = withStyles(styles as any)(Map) as React.ComponentType<P>
+export default class Map extends React.PureComponent<
+    P & WithStyles<Styles>, S> {
+    public static Display = withStyles(styles as any)(
+        Map
+    ) as React.ComponentType<P>;
     public state: Readonly<S>;
     constructor(props: any) {
-        super(props)
+        super(props);
         this.state = {
-            coords: []
-        }
+            coords: [],
+            center: [2.3488, 48.8534],
+            zoom: 6
+        };
     }
     render() {
         const { classes } = this.props;
         const tab = this.state.coords;
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A';
-        // eslint-disable-next-line
+        mapboxgl.accessToken =
+            "pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A";
+
         let map: mapboxgl.Map = new mapboxgl.Map({
-            container: 'map', // Container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // Map style to use
-            center: [2.3488, 48.8534], // Starting position [lng, lat]
-            zoom: 9 // Starting zoom level,
+            container: "map",
+            style: "mapbox://styles/mapbox/streets-v11",
+            center: this.state.center,
+            zoom: this.state.zoom
         });
-        console.log("center", map.getCenter(), map.getZoom());
-        map.on('load', function () {
-            map.addSource('route', {
-                'type': 'geojson',
-                'data': {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
-                        'type': 'LineString',
-                        'coordinates': tab
-                    }
-                }
+
+        map.on("load", function () {
+            if (tab.length >0) {
+                new mapboxgl.Marker()
+                .setLngLat(tab[0])
+                .addTo(map);
+                new     mapboxgl.Marker()
+                    .setLngLat(tab[tab.length - 1])
+                    .addTo(map);
+            }
+            map.addSource("route", {
+                type: "geojson",
+                data: {
+                    type: "Feature",
+                    properties: {
+                        zoom: 10
+                    },
+                    geometry: {
+                        type: "LineString",
+                        coordinates: tab,
+                    },
+                },
             });
             map.addLayer({
-                'id': 'route',
-                'type': 'line',
-                'source': 'route',
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
+                id: "route",
+                type: "line",
+                source: "route",
+                layout: {
+                    "line-join": "round",
+                    "line-cap": "round",
                 },
-                'paint': {
-                    'line-color': '#0000FF',
-                    'line-width': 8
-                }
+                paint: {
+                    "line-color": "#0000FF",
+                    "line-width": 3,
+                },
             });
-            console.log('Entrer dans line', tab)
-            console.log("center", map.getCenter(), map.getZoom(), map.getSource('route'));
         });
-
-        // map.on('', function () {
-        //     map.setZoom(map.getZoom());
-        //     map.setCenter(map.getCenter());
-        // });
-
-
-
         return (
             <div id="geocoding" className={classes.mainMenu}>
                 <MainMenu.Display mapLine={this.addItinaryLine} />
             </div>
-        )
+        );
     }
-    
-    addItinaryLine = (coords: Array<any>) => {
-    this.setState({
-        coords: coords
-    })
-}
+
+    addItinaryLine = (coords: Array<any>, zoom: number) => {
+        this.setState({
+            coords: coords,
+            center: coords[0],
+            zoom: zoom
+        });
+        
+    };
 }

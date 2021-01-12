@@ -14,7 +14,6 @@ const dijkstra = async (startPosition, tabCoord, len) => {
             tab.push(await (axios.get("https://api.mapbox.com/directions/v5/mapbox/driving/" + lng + "," + lat + ";" + String(tab[i].lng) + "," + String(tab[i].lat) + "?alternatives=false&geometries=geojson&steps=true&language=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A"))
                 .then(resp => {
                     if (resp.status == 200) {
-                        console.log(resp.data.waypoints)
                         if (minDuration == undefined) {
                             minDuration = resp.data;
                             min = minDuration.routes[0].duration; //il faut check si routes == undifened
@@ -32,7 +31,7 @@ const dijkstra = async (startPosition, tabCoord, len) => {
                 }));
         }
         result.push(minDuration)
-        console.log(minDuration.waypoints)
+        console.log("test:",minDuration.waypoints)
         tabLen--;
         tab.splice(indexMinDuration, 1);
         nbRoutes--;

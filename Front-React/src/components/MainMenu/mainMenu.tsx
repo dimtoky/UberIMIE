@@ -4,12 +4,11 @@ import styles, { Styles } from './styles';
 import Avatar from '@material-ui/core/Avatar';
 import { coordonees } from '../../Interfaces/coordonnees';
 import Axios from 'axios';
-import SearchIcon from '@material-ui/icons/Search';
-import { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import SearchIcon  from '@material-ui/icons/Search';
+import AddIcon  from '@material-ui/icons/Add';
 import Select from 'react-select';
-import mapboxgl from 'mapbox-gl';
 
-interface P { mapLine: (coords: Array<any>) => void }
+interface P { mapLine: (coords: Array<any>, zoom: number) => void }
 interface S {
   addresses: coordonees[],
   start: coordonees
@@ -38,7 +37,6 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
   }
 
   render() {
-    const filter = createFilterOptions<AddressType>();
     const { classes, mapLine } = this.props;
     return (
       <Card className={classes.root}>
@@ -54,7 +52,6 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         />
 
         <CardContent>
-
           <TextField
             label="Address..."
             variant="outlined"
@@ -70,64 +67,41 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
             <SearchIcon />
           </IconButton>
+          
           <Select
             menuPortalTarget={document.body}
             menuPosition={'fixed'}
             isSearchable
             options={this.state.tabAdressesName}
-            className={classes.select}
+            className={classes.input}
             onChange={(event) => {
               if (event) {
-                this.setState({
-                  addressChoice: this.state.addressChoice,
-                  tabAdressesName: this.state.tabAdressesName,
-                  addresses: this.state.addresses,
-                  start: event.value
-                })
+                if(this.state.start.lat===0 && this.state.start.lng===0) {
+                  this.setState({
+                    addressChoice: this.state.addressChoice,
+                    tabAdressesName: this.state.tabAdressesName,
+                    addresses: this.state.addresses,
+                    start: event.value
+                  });
+                }
+                else {
+                  var tab = this.state.addresses;
+                  tab.push(event.value)
+                  this.setState({
+                    addressChoice: event.label,
+                    tabAdressesName: this.state.tabAdressesName,
+                    addresses: tab,
+                    start: this.state.start
+                  });
+                }
               }
             }
             }
-
           >
           </Select>
-          <TextField
-            label="Address..."
-            variant="outlined"
-            InputProps={{ type: 'search' }}
-            onChange={(event) => this.setState({
-              addressChoice: event.target.value,
-              tabAdressesName: this.state.tabAdressesName,
-              addresses: this.state.addresses,
-              start: this.state.start
-            })}
-            className={classes.input}
-          />
-          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
-            <SearchIcon />
+          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.initAddressInputSelection}>
+            <AddIcon />
           </IconButton>
-          <Select
-            menuPortalTarget={document.body}
-            menuPosition={'fixed'}
-            isSearchable
-            options={this.state.tabAdressesName}
-            className={classes.input}
-            onChange={(event) => {
-              if (event) {
-                var tab = this.state.addresses;
-                console.log(this.state.addresses)
-                tab.push(event.value)
-                this.setState({
-                  addressChoice: event.label,
-                  tabAdressesName: this.state.tabAdressesName,
-                  addresses: tab,
-                  start: this.state.start
-                })
-                console.log(this.state.addresses)
-              }
-            }
-            }
-          >
-          </Select>
           <Button onClick={() => this.searchItinary(mapLine)} className={classes.iconButton}> Valider</Button>
         </CardContent>
       </Card>
@@ -168,22 +142,41 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       addresses: this.state.addresses,
       start: this.state.start
     });
-    console.log(`Option selected:`, selectedOption);
   };
 
   searchItinary = (mapLineFunction: any) => {
-    console.log(this.state.start)
-    Axios.post('http://127.0.0.1:3001/itinary', {
+    if(this.state.addresses.length > 0) {
+      Axios.post('http://127.0.0.1:3001/itinary', {
+        start: this.state.start,
+        coords: this.state.addresses,
+        len: this.state.addresses.length
+      })
+        .then(function (response) {
+          let tabCoord: Array<any> = [];
+          for( var itinary of response.data.itinary) {
+            for(var coord of itinary.routes[0].legs[0].steps) {
+              for(var item of coord.geometry.coordinates) {
+                tabCoord.push(item)
+              }
+            }
+          }
+          mapLineFunction(tabCoord, 10)
+        }).catch(function (error) {
+          console.error(error);
+        });
+    }
+    else {
+      alert("Nombre d'adresse insufisant.");
+    }
+  }
+
+  initAddressInputSelection= () => {
+    this.setState({
       start: this.state.start,
-      coords: this.state.addresses,
-      len: this.state.addresses.length
-    })
-      .then(function (response) {
-        mapLineFunction(response.data.itinary[0].routes[0].geometry.coordinates)
-        console.log(response.data.itinary[0])
-      }).catch(function (error) {
-        console.error(error);
-      });
+      addresses: this.state.addresses,
+      addressChoice: '',
+      tabAdressesName: []
+    });
   }
 
 }
