@@ -3,9 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
@@ -13,11 +11,10 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx";
 import Axios from 'axios';
-import { RouteComponentProps } from "react-router-dom";
+import { BrowserRouter, Redirect, RouteComponentProps, Switch } from "react-router-dom";
 
 type TParams = { token: string };
-interface P {
-}
+interface P { }
 interface S {
   password: string,
   resetToken: string,
@@ -94,24 +91,13 @@ export default class ResetPassword extends React.PureComponent<P & WithStyles<St
               </Button>
           </form>
         </div>
-        <Box mt={5}>
-          <Copyright />
-        </Box>
+        <BrowserRouter>
+          <Switch>
+            <Redirect to="/auth/forgotPassword" />
+          </Switch>
+        </BrowserRouter>
       </Container>
     );
-
-    function Copyright() {
-      return (
-        <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright © '}
-          <Link color="inherit" href="https://material-ui.com/">
-            Your Website
-            </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      );
-    }
   }
 
 

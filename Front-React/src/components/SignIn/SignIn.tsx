@@ -36,7 +36,6 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
   render() {
     const { classes } = this.props;
     return (
-      <BrowserRouter>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -85,33 +84,34 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
               </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link to="/auth/signUp" replace>
+                <Link to="/auth/signUp">
                   Don't have an account? Sign up
                   </Link>
               </Grid>
             </Grid>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link to="/auth/forgotPassword" replace>
+                <Link to="/auth/forgotPassword">
                   Forgot password ?
                   </Link>
               </Grid>
             </Grid>
           </form>
         </div>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/auth/signUp">
+              <SignUp.Display />
+            </Route>
+            <Route exact path="/auth/forgotPassword">
+              <ResetPassword.Display />
+            </Route>
+            <Redirect to="/auth/signIn" />
+          </Switch>
+        </BrowserRouter>
 
 
       </Container>
-      <Switch>
-          <Route exact={true} path="/auth/signUp">
-            <SignUp.Display />
-          </Route>
-          <Route exact={true} path="/auth/forgotPassword">
-            <ResetPassword.Display />
-          </Route>
-            <Redirect to="/auth/signIn" />
-        </Switch>
-      </BrowserRouter>
     );
   }
   onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
