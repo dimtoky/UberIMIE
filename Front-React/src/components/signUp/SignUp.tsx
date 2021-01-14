@@ -16,8 +16,8 @@ import Axios from 'axios';
 import UserInterface from '../../Interfaces/userInterfaces';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 
-interface P {}
-interface S { 
+interface P { }
+interface S {
   user: UserInterface,
   passwdStatus: boolean
 }
@@ -29,10 +29,10 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
     super(props);
     this.state = {
       user: {
-      id: 1, 
-      name: '',
-      email: '',
-      password: ''
+        id: 1,
+        name: '',
+        email: '',
+        password: ''
       },
       passwdStatus: false
     };
@@ -44,189 +44,225 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
             </Typography>
-            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                    onChange={this.onChangeName}
-                  />
-                </Grid>
-            
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    onChange={this.onChangeEmail}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={this.onChangePassword}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="confirm_password"
-                    label="Confirm Password"
-                    type="password"
-                    id="confirm_password"
-                    autoComplete="current-password"
-                    onChange={this.onChangeConfirmPassword}
-                    
-                  />
-                </Grid>
+          <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  onChange={this.onChangeName}
+                />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign Up
-              </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/auth/signIn" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
 
-          <Box mt={5}>
-            <Copyright />
-          </Box>
-          <BrowserRouter>
-            <Switch>
-              <Redirect to="/auth/signUp"/>
-            </Switch>
-          </BrowserRouter>
-        </Container>
-      );
-    
-      function Copyright() {
-        return (
-          <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-              Your Website
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={this.onChangeEmail}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.onChangePassword}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="confirm_password"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirm_password"
+                  autoComplete="current-password"
+                  onChange={this.onChangeConfirmPassword}
+
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={this.onChangeEmail}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={this.onChangePassword}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="confirm_password"
+                label="Confirm Password"
+                type="password"
+                id="confirm_password"
+                autoComplete="current-password"
+                onChange={this.onChangeConfirmPassword}
+
+              />
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign Up
+              </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/auth/signIn" variant="body2">
+                  Already have an account? Sign in
+                  </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+        <BrowserRouter>
+          <Switch>
+            <Redirect to="/auth/signUp" />
+          </Switch>
+        </BrowserRouter>
+      </Container>
+    );
+
+    function Copyright() {
+      return (
+        <Typography variant="body2" color="textSecondary" align="center">
+          {'Copyright © '}
+          <Link color="inherit" href="https://material-ui.com/">
+            Your Website
             </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
-        );
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
+      );
     }
   }
-  
+
   onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const name = event.target.value;
+    const name: string = event.target.value;
     this.setState({
       user: {
         name: name,
         email: this.state.user.email,
         password: this.state.user.password
       }
-  });
+    });
   }
 
 
   onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const mail = event.target.value;
+    const mail: string = event.target.value;
     this.setState({
       user: {
-        name : this.state.user.name,
+        name: this.state.user.name,
         email: mail,
         password: this.state.user.password
       }
-  });
+    });
   }
 
   onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const passwd = event.target.value;
-      this.setState({
-        user: {
-          name : this.state.user.name,
-          email: this.state.user.email,
-          password: passwd
-        }
+    const passwd: string = event.target.value;
+    this.setState({
+      user: {
+        name: this.state.user.name,
+        email: this.state.user.email,
+        password: passwd
+      }
     });
   }
 
   onChangeConfirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const confirmPasswd = event.target.value;
-    if(confirmPasswd === this.state.user.password) {  
-    this.setState({
+    const confirmPasswd: string = event.target.value;
+    if (confirmPasswd === this.state.user.password) {
+      this.setState({
         passwdStatus: true
-    });
+      });
     }
     else {
       this.setState({
-        passwdStatus: false 
-    });
+        passwdStatus: false
+      });
     }
   }
 
-  onSubmit(event: any): any {
+  onSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> | undefined{
     event.preventDefault();
-    if(this.state.passwdStatus) {
+    if (this.state.passwdStatus) {
       console.log(this.state);
       return (
         Axios.post(this.apiUrl, {
-        name: this.state.user.name,
-        email: this.state.user.email,
-        password: this.state.user.password
-    },{
-        headers: {
+          name: this.state.user.name,
+          email: this.state.user.email,
+          password: this.state.user.password
+        }, {
+          headers: {
             'Content-Type': 'application/json; charset=UTF-8'
-        }
-}).then(response => { 
-	console.log(response)
-})
-.catch(error => {
-    console.log(error.response)
-})
-        );
-    }
-    else {
-      console.log(this.state.passwdStatus);
+          }
+        }).then(response => {
+          console.log(response)
+        })
+          .catch(error => {
+            console.log(error.response)
+          })
+      );
     }
   }
 }

@@ -1,11 +1,14 @@
 ## Uber app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ### `Routing:`
+
     "/auth/signIn" = signIn (connexion)
     "/auth/signUp" = signUp (inscription)
     "/auth/forgotPassword" = ForgotPassword (mot de passe oublié)
     "/drive" = map (carte)
+
 ### `yarn start`
 
 Runs the app in the development mode.

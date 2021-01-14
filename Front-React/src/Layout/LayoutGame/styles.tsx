@@ -1,22 +1,22 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "layout"|"logo"|"map"|"headerBar"; // add class create
+export type Styles = "layout" | "logo" | "map" | "headerBar"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
-    layout:{
-        maxHeight: '100%',
-        height: '100vh'
+    layout: {
+        height: '100%'
     },
     logo: {
         width: 'auto',
         height: '100px'
-        
+
     },
     map: {
-        zIndex: 2
+        top: '0px',
+        height: '100%',
+        width: '100%',
     },
     headerBar: {
-        minHeight: '90px',
-        zIndex: 2
+        height: '90px'
     }
 });
 

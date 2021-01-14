@@ -20,7 +20,7 @@ exports.router = (function () {
     router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
 
     // Itinary routes
-    router.route('/itinary/').get(itinaryController.dijkstraTest);
+    router.route('/itinary/').post(itinaryController.dijkstraTest);
 
     return router;
 })();
