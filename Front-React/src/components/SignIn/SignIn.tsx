@@ -43,7 +43,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Sign In
             </Typography>
           <form className={classes.form} noValidate autoComplete="off" onSubmit={this.onSubmit}>
             <Grid container spacing={2}>
@@ -80,7 +80,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
               color="primary"
               className={classes.submit}
             >
-              Sign Up
+              Sign In
               </Button>
             <Grid container justify="flex-end">
               <Grid item>
@@ -124,38 +124,36 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
   }
   onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const mail = event.target.value;
+    const mail: string = event.target.value;
     this.setState({
       email: mail
     });
   }
   onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const passwd = event.target.value;
+    const passwd: string = event.target.value;
     this.setState({
       password: passwd
     });
   }
 
-  onSubmit(event: any) {
+  onSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    console.log(this.state.email);
     return (
-      
       Axios.post(this.apiUrl, {
         email: this.state.email,
         password: this.state.password
-    },{
+      }, {
         headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
+          'Content-Type': 'application/json; charset=UTF-8'
         }
-}).then(response => { 
-	console.log(response)
-})
-.catch(error => {
-    console.log(error.response)
-})
-      
+      }).then(response => {
+        console.log(response)
+      })
+        .catch(error => {
+          console.log(error.response)
+        })
+
     )
   }
 

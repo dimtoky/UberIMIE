@@ -92,27 +92,27 @@ export default class ForgotPassword extends React.PureComponent<P & WithStyles<S
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const mail = event.target.value;
+    const mail: string = event.target.value;
     this.setState({
       email: mail
     });
   }
 
-    handleSubmit(event: any) {
-      event.preventDefault();
-      return (
-        Axios.post(this.apiUrl, {
-          email: this.state.email,
-      },{
-          headers: {
-              'Content-Type': 'application/json; charset=UTF-8'
-          }
-  }).then(response => { 
-    console.log(response)
-  })
-  .catch(error => {
-      console.log(error.response)
-  })
-      );
-    }
+  handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+    return (
+      Axios.post(this.apiUrl, {
+        email: this.state.email,
+      }, {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      }).then(response => {
+        console.log(response)
+      })
+        .catch(error => {
+          console.log(error.response)
+        })
+    );
+  }
 }

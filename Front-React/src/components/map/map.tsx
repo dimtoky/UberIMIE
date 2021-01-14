@@ -11,11 +11,8 @@ interface S {
     center: [number, number];
     zoom: number;
 }
-export default class Map extends React.PureComponent<
-    P & WithStyles<Styles>, S> {
-    public static Display = withStyles(styles as any)(
-        Map
-    ) as React.ComponentType<P>;
+export default class Map extends React.PureComponent<P & WithStyles<Styles>, S> {
+    public static Display = withStyles(styles as any)(Map) as React.ComponentType<P>;
     public state: Readonly<S>;
     constructor(props: any) {
         super(props);
@@ -27,7 +24,7 @@ export default class Map extends React.PureComponent<
     }
     render() {
         const { classes } = this.props;
-        const tab = this.state.coords;
+        const tab: Array<any> = this.state.coords;
         mapboxgl.accessToken =
             "pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A";
 
@@ -39,11 +36,11 @@ export default class Map extends React.PureComponent<
         });
 
         map.on("load", function () {
-            if (tab.length >0) {
+            if (tab.length > 0) {
                 new mapboxgl.Marker()
-                .setLngLat(tab[0])
-                .addTo(map);
-                new     mapboxgl.Marker()
+                    .setLngLat(tab[0])
+                    .addTo(map);
+                new mapboxgl.Marker()
                     .setLngLat(tab[tab.length - 1])
                     .addTo(map);
             }
@@ -87,6 +84,6 @@ export default class Map extends React.PureComponent<
             center: coords[0],
             zoom: zoom
         });
-        
+
     };
 }

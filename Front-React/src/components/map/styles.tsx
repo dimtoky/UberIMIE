@@ -1,5 +1,4 @@
 import { createStyles, Theme } from "@material-ui/core";
-import { Height } from "@material-ui/icons";
 
 export type Styles = "mainMenu" | "container"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({

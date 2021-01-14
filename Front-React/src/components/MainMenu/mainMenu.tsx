@@ -4,16 +4,17 @@ import styles, { Styles } from './styles';
 import Avatar from '@material-ui/core/Avatar';
 import { coordonees } from '../../Interfaces/coordonnees';
 import Axios from 'axios';
-import SearchIcon  from '@material-ui/icons/Search';
-import AddIcon  from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/Add';
 import Select from 'react-select';
 
 interface P { mapLine: (coords: Array<any>, zoom: number) => void }
 interface S {
-  addresses: coordonees[],
+  addresses: Array<coordonees>,
   start: coordonees
   addressChoice: string,
-  tabAdressesName: AddressType[]
+  tabAdressesName: Array<AddressType>,
+  steps: Array<string>
 }
 interface AddressType {
   value: coordonees;
@@ -32,12 +33,16 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       },
       addresses: [],
       addressChoice: '',
-      tabAdressesName: []
+      tabAdressesName: [],
+      steps: []
     }
   }
 
   render() {
     const { classes, mapLine } = this.props;
+    const listItems = this.state.steps.map((indication) =>
+      <li>{indication}</li>
+    );
     return (
       <Card className={classes.root}>
         <CardHeader
@@ -67,31 +72,33 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
             <SearchIcon />
           </IconButton>
-          
+
           <Select
+            className={classes.inputSelect}
             menuPortalTarget={document.body}
             menuPosition={'fixed'}
             isSearchable
             options={this.state.tabAdressesName}
-            className={classes.input}
             onChange={(event) => {
               if (event) {
-                if(this.state.start.lat===0 && this.state.start.lng===0) {
+                if (this.state.start.lat === 0 && this.state.start.lng === 0) {
                   this.setState({
                     addressChoice: this.state.addressChoice,
                     tabAdressesName: this.state.tabAdressesName,
                     addresses: this.state.addresses,
-                    start: event.value
+                    start: event.value,
+                    steps: this.state.steps
                   });
                 }
                 else {
-                  var tab = this.state.addresses;
+                  var tab: Array<coordonees> = this.state.addresses;
                   tab.push(event.value)
                   this.setState({
                     addressChoice: event.label,
                     tabAdressesName: this.state.tabAdressesName,
                     addresses: tab,
-                    start: this.state.start
+                    start: this.state.start,
+                    steps: this.state.steps
                   });
                 }
               }
@@ -99,18 +106,21 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             }
           >
           </Select>
-          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.initAddressInputSelection}>
+          <IconButton type="submit" className={classes.addIconButton} aria-label="add" onClick={this.initAddressInputSelection}>
             <AddIcon />
           </IconButton>
           <Button onClick={() => this.searchItinary(mapLine)} className={classes.iconButton}> Valider</Button>
+          <ul>{listItems}</ul>
         </CardContent>
+
+
       </Card>
     );
   }
 
   getCoordFromApi = () => {
     const address = this.state.addressChoice;
-    var addressResponse;
+    var addressResponse: Array<any>;
     var tab: AddressType[] = [];
     Axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?country=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A')
       .then(function (response) {
@@ -120,11 +130,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             tab.push({
               value: { lat: addr.geometry.coordinates[1], lng: addr.geometry.coordinates[0] },
               label: addr.place_name
-
             });
           }
         }
-
       }).catch(function (error) {
         console.error(error);
       });
@@ -140,12 +148,16 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       addressChoice: selectedOption.label,
       tabAdressesName: this.state.tabAdressesName,
       addresses: this.state.addresses,
-      start: this.state.start
+      start: this.state.start,
+      steps: this.state.steps
     });
   };
 
-  searchItinary = (mapLineFunction: any) => {
-    if(this.state.addresses.length > 0) {
+  searchItinary = (mapLineFunction: (coords: Array<any>, zoom: number) => void) => {
+    var tabSteps: Array<string> = [];
+    var tmp: this = this;
+    if (this.state.addresses.length > 0) {
+      alert("Calcul de l'initéraire")
       Axios.post('http://127.0.0.1:3001/itinary', {
         start: this.state.start,
         coords: this.state.addresses,
@@ -153,14 +165,21 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       })
         .then(function (response) {
           let tabCoord: Array<any> = [];
-          for( var itinary of response.data.itinary) {
-            for(var coord of itinary.routes[0].legs[0].steps) {
-              for(var item of coord.geometry.coordinates) {
-                tabCoord.push(item)
+          if (response.data.itinary === []) {
+            alert("Aucun Itineraire trouvé.");
+          }
+          else {
+            for (var itinary of response.data.itinary) {
+              for (var coord of itinary.routes[0].legs[0].steps) {
+                tabSteps.push("Dans " + coord.maneuver.bearing_after + "m. " + coord.maneuver.instruction + ".");
+                for (var item of coord.geometry.coordinates) {
+                  tabCoord.push(item);
+                }
               }
             }
+            mapLineFunction(tabCoord, 10);
+            tmp.fetchSteps(tabSteps);
           }
-          mapLineFunction(tabCoord, 10)
         }).catch(function (error) {
           console.error(error);
         });
@@ -170,14 +189,25 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     }
   }
 
-  initAddressInputSelection= () => {
+  initAddressInputSelection = () => {
     this.setState({
       start: this.state.start,
       addresses: this.state.addresses,
       addressChoice: '',
       tabAdressesName: []
     });
+    alert("Adresse enregistré.")
   }
 
+  public fetchSteps = (tabSteps: Array<string>) => {
+    console.log("ok", tabSteps)
+    this.setState({
+      addressChoice: this.state.addressChoice,
+      addresses: this.state.addresses,
+      start: this.state.start,
+      tabAdressesName: this.state.tabAdressesName,
+      steps: tabSteps
+    })
+  }
 }
 

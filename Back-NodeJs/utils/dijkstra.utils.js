@@ -15,23 +15,32 @@ const dijkstra = async (startPosition, tabCoord, len) => {
                 .then(resp => {
                     if (resp.status == 200) {
                         if (minDuration == undefined) {
-                            minDuration = resp.data;
-                            min = minDuration.routes[0].duration; //il faut check si routes == undifened
-                            indexMinDuration = i;
-                        } else if (resp.data.routes[0].duration <= min) {
-                            minDuration = resp.data;
-                            min = minDuration.routes[0].duration;
-                            indexMinDuration = i;
+                            if (resp.data.routes[0]) {
+                                minDuration = resp.data;
+                                min = minDuration.routes[0].duration;
+                                indexMinDuration = i;
+                            }
+                            else {
+                                return [];
+                            }
+                        } else if (resp.data.routes[0]) {
+                            if (resp.data.routes[0].duration <= min) {
+                                minDuration = resp.data;
+                                min = minDuration.routes[0].duration;
+                                indexMinDuration = i;
+                            }
+                        }
+                        else {
+                            return [];
                         }
                     }
                     else {
-                        // a voir
-                        console.log(resp);
+                        return [];
                     }
                 }));
         }
         result.push(minDuration)
-        console.log("test:",minDuration.waypoints)
+        console.log("Etape:", minDuration.waypoints)
         tabLen--;
         tab.splice(indexMinDuration, 1);
         nbRoutes--;
