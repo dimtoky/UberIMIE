@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
@@ -108,45 +107,6 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
                 />
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={this.onChangeEmail}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={this.onChangePassword}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="confirm_password"
-                label="Confirm Password"
-                type="password"
-                id="confirm_password"
-                autoComplete="current-password"
-                onChange={this.onChangeConfirmPassword}
-
-              />
-            </Grid>
             <Button
               type="submit"
               fullWidth
@@ -165,10 +125,6 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
             </Grid>
           </form>
         </div>
-
-        <Box mt={5}>
-          <Copyright />
-        </Box>
         <BrowserRouter>
           <Switch>
             <Redirect to="/auth/signUp" />
@@ -176,19 +132,6 @@ export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> 
         </BrowserRouter>
       </Container>
     );
-
-    function Copyright() {
-      return (
-        <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright © '}
-          <Link color="inherit" href="https://material-ui.com/">
-            Your Website
-            </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      );
-    }
   }
 
   onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {

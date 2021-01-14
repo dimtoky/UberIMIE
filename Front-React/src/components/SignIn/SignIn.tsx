@@ -3,9 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
@@ -13,7 +11,9 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx"
 import Axios from 'axios';
-import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Link, Redirect, Route, Switch, NavLink } from 'react-router-dom';
+import SignUp from '../signUp/SignUp';
+import ResetPassword from '../ResetPassword/resetPassword';
 
 interface P { }
 interface S {
@@ -36,6 +36,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
   render() {
     const { classes } = this.props;
     return (
+      <BrowserRouter>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -84,43 +85,34 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
               </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="/auth/signUp" variant="body2">
+                <Link to="/auth/signUp" replace>
                   Don't have an account? Sign up
                   </Link>
               </Grid>
             </Grid>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="/auth/forgotPassword" variant="body2">
+                <Link to="/auth/forgotPassword" replace>
                   Forgot password ?
                   </Link>
               </Grid>
             </Grid>
           </form>
         </div>
-        <Box mt={5}>
-          <Copyright />
-        </Box>
-        <BrowserRouter>
-          <Switch>
-            <Redirect to="/auth/signIn" />
-          </Switch>
-        </BrowserRouter>
-      </Container>
-    );
 
-    function Copyright() {
-      return (
-        <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright © '}
-          <Link color="inherit" href="https://material-ui.com/">
-            Your Website
-            </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      );
-    }
+
+      </Container>
+      <Switch>
+          <Route exact={true} path="/auth/signUp">
+            <SignUp.Display />
+          </Route>
+          <Route exact={true} path="/auth/forgotPassword">
+            <ResetPassword.Display />
+          </Route>
+            <Redirect to="/auth/signIn" />
+        </Switch>
+      </BrowserRouter>
+    );
   }
   onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
