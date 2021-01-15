@@ -3,7 +3,8 @@ import { createStyles, Theme } from "@material-ui/core";
 export type Styles = "layout" | "logo" | "map" | "headerBar"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
     layout: {
-        height: '100%'
+        height: '100%',
+        maxHeight: '100%'
     },
     logo: {
         width: 'auto',
@@ -11,9 +12,8 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
 
     },
     map: {
-        top: '0px',
         height: '100%',
-        width: '100%',
+        width: '100%'
     },
     headerBar: {
         height: '90px'
