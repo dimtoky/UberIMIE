@@ -7,13 +7,14 @@ Rest API for UberIMIE
 - [Login](doc/user/login.md) :  `POST /users/login/`
 - [ForotPassword](doc/user/forgotpass.md) : `POST /users/forgotpswd/`
 - [ResetPassword](doc/user/resetpass.md) : `POST /users/resetpswd/`
-- [RefreshToken](doc/user/refreshtoken.md) : `GET /users/refresh/` 
  
 
-
 #Itinerary Routes
-- [CalculateItinerary](doc/itinerary/generate.md) :  `POST /itinerary` 
-- [Itineraries History](doc/itinerary/getAll.md) :  `GET /itinerary/history/all`
-- [Itinerariy History](doc/itinerary/getId.md) :  `GET /itinerary/history/:id` 
+- [CalculateItinerary](doc/itinerary/generate.md) :  `POST /itinerary/` 
+
+
+#History Routes
+- [Save Ttinerary](doc/history/create.md) :  `GET /itinerary/save/` 
+- [Load History](doc/history/load.md) :  `GET /itinerary/load/` 
 
 

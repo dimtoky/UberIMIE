@@ -44,7 +44,7 @@ export class HeaderBar extends React.PureComponent<P & WithStyles<Styles>, S>{
 
     disconnect = () => {
         this.setState({ redirect: true });
-        localStorage.setItem('token', 'null');
-        localStorage.setItem('email', 'null');
+        localStorage.setItem('token', '');
+        localStorage.setItem('email', '');
     }
 }

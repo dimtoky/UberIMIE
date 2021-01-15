@@ -15,6 +15,7 @@ interface S {
   addressChoice: string,
   tabAdressesName: Array<AddressType>,
   steps: Array<string>,
+  canSave: boolean
   addressTMP: AddressType,
   tabAddressTMP: Array<string>
 }
@@ -37,6 +38,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       addressChoice: '',
       tabAdressesName: [],
       steps: [],
+      canSave: false,
       addressTMP: {
         value: {
           lng: 0,
@@ -132,12 +134,15 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             <AddIcon />
           </IconButton>
           <Button onClick={() => this.searchItinary(mapLine)} className={classes.validateButton}> Valider</Button>
+          <Button disabled={!this.state.canSave} onClick={() => this.saveItinary()} className={classes.iconButton}> Sauvegarder</Button>
           <ul className={classes.addressesInfo}>{listItemsAddresses}</ul>
           <ul className={classes.stepsInfo}>{listItems}</ul>
         </CardContent>
 
+        <Button className={classes.switchButton} href="/history" variant="contained">Historique</Button>
 
       </Card>
+     
     );
   }
 
@@ -192,12 +197,19 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     var tabSteps: Array<string> = [];
     var tmp: this = this;
     if (this.state.addresses.length > 0) {
-      alert("Calcul de l'initéraire, veuillez patienter...")
+      this.setState({
+        canSave: true 
+      });
+      alert("Calcul de l'initéraire, veuillez patienter...");
       Axios.post('http://127.0.0.1:3001/itinerary', {
         start: this.state.start,
         coords: this.state.addresses,
         len: this.state.addresses.length
-      })
+      }, {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'auth-token': localStorage.getItem('token')
+        }})
         .then(function (response) {
           let tabCoord: Array<any> = [];
           if (response.data.itinerary === []) {
@@ -238,7 +250,11 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             tmp.fetchSteps(tabSteps);
           }
         }).catch(function (error) {
-          console.error(error);
+          console.error(error.response.status);
+          if (error.response.status === (401 || 400)) {
+            alert("Connexion refusée")
+
+          }
         });
       this.setState({
         addressChoice: '',
@@ -263,6 +279,23 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     else {
       alert("Nombre d'adresse insufisant.");
     }
+  }
+
+  saveItinary = () => {
+
+      alert("Itinéraire sauvegardée")
+      Axios.post('http://127.0.0.1:3001/itinerary/save', {
+        email: localStorage.getItem('email'),
+        data: {
+        start: this.state.start,
+        coords: this.state.addresses,
+        len: this.state.addresses.length}
+      })
+        .then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.error(error);
+        });
   }
 
   initAddressInputSelection = (): number => {

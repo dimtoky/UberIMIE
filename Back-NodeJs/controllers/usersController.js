@@ -5,7 +5,7 @@ const User = require("../models/User");
 const { registerValidation, loginValidation } = require('../utils/validation');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('secret');
+sgMail.setApiKey('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');
 
 //Routes
 module.exports = {
@@ -99,7 +99,7 @@ module.exports = {
                 user.save()
                     .then(user => {
                         // send email
-                        let link = "http://localhost:3000/resetpassword/" + user.resetPasswordToken;
+                        let link = "http://134.209.17.66/resetpassword/" + user.resetPasswordToken;
                         const mailOptions = {
                             to: user.email,
                             from: 'dimension43@hotmail.fr',
