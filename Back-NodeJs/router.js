@@ -2,7 +2,7 @@
 const express = require('express');
 const jwtUtils = require('./utils/jwt.utils');
 const usersController = require('./controllers/usersController');
-const itinaryController = require('./controllers/itinaryController');
+const itinaryController = require('./controllers/itineraryController');
 
 //Router
 exports.router = (function () {
@@ -20,7 +20,7 @@ exports.router = (function () {
     router.route('/users/test/').get(jwtUtils.verifyJWTToken, usersController.test);
 
     // Itinary routes
-    router.route('/itinary/').post(itinaryController.dijkstraTest);
+    router.route('/itinerary/').post(itinaryController.dijkstraTest);
 
     return router;
 })();

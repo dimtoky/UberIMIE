@@ -8,12 +8,12 @@ module.exports = {
         if (req.body.start && req.body.coords && req.body.len) {
             if ((req.body.start.lat && req.body.start.lng) && (req.body.coords[0]) && typeof(req.body.len) == 'number' && req.body.len > 0) {
                 if (typeof(req.body.start.lat) == 'number' && typeof(req.body.start.lng) == 'number') {
-                        console.log("Compute itinary...");
+                        console.log("Compute itinerary...");
                         const result = await dijkstra(req.body.start, req.body.coords, req.body.len)
                         if (result.length > 0) {
                             res.status(200).json({
                                 error: null,
-                                itinary: result
+                                itinerary: result
                             })
                         }
                         else {
@@ -39,6 +39,6 @@ module.exports = {
                     error: "Invalid request"
                 })
             }
-        console.log("Itinary: OK");
+        console.log("Itinerary: OK");
     }
 }

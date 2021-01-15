@@ -8,7 +8,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('/POST itinary', () => {
+describe('/POST itinerary', () => {
     //test sucess
     it('test une requetes valide', (done) => {
         let tmp = {
@@ -34,13 +34,13 @@ describe('/POST itinary', () => {
             "len": 3
         }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                res.body.should.have.property('itinary')
-                res.body.itinary.should.be.a('array')
+                res.body.should.have.property('itinerary')
+                res.body.itinerary.should.be.a('array')
                 done();
             });
     });
@@ -62,7 +62,7 @@ describe('/POST itinary', () => {
             "len": 0
         }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -88,7 +88,7 @@ describe('/POST itinary', () => {
             "len": 1
         }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -114,7 +114,7 @@ describe('/POST itinary', () => {
             "len": 0
         }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -140,7 +140,7 @@ describe('/POST itinary', () => {
             "len": 1
         }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -154,7 +154,7 @@ describe('/POST itinary', () => {
     it('it should give an error Invalid request on empty object req', (done) => {
         let tmp = {}
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -167,7 +167,7 @@ describe('/POST itinary', () => {
     it('it should give an error Invalid request on empty string req', (done) => {
         let tmp = ""
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -180,7 +180,7 @@ describe('/POST itinary', () => {
     it('it should give an error "Invalid request on array req', (done) => {
         let tmp = []
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -193,7 +193,7 @@ describe('/POST itinary', () => {
     it('it should give an error Invalid request on array of anythings', (done) => {
         let tmp = [2, 3]
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -206,7 +206,7 @@ describe('/POST itinary', () => {
     it('it should give an error Invalid request on string of anythings', (done) => {
         let tmp = "test"
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -219,7 +219,7 @@ describe('/POST itinary', () => {
     it('just have property: coords and len,', (done) => {
         let tmp = { start: [0, 0] }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -232,7 +232,7 @@ describe('/POST itinary', () => {
     it('just have property: start and len,', (done) => {
         let tmp = { coords: [0, 0] }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -245,7 +245,7 @@ describe('/POST itinary', () => {
     it('just have property: start and coords', (done) => {
         let tmp = { len: [0, 0] }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -261,7 +261,7 @@ describe('/POST itinary', () => {
             coords: [0, 0]
         }
         chai.request(server)
-            .post('/itinary')
+            .post('/itinerary')
             .send(tmp)
             .end((err, res) => {
                 res.should.have.status(400);
