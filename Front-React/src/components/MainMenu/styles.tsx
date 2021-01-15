@@ -1,6 +1,10 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "root" | "media" | "expand" | "avatar" | "input" | "subHeader" | "iconButton" | "select" | "addIconButton" | "inputSelect" | "switchButton"; // add class create
+export type Styles = 
+"root" | "media" | "expand" | "avatar" | "input" | "subHeader" 
+| "iconButton" | "select" | "addIconButton" | "inputSelect"
+| "stepsInfo" | "blockSearch" | "validateButton" | "addressesInfo" | "switchButton";
+
 const styles = (theme: Theme) => createStyles<Styles, {}>({
   root: {
     display: 'block',
@@ -43,7 +47,11 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     }
   },
   iconButton: {
-    padding: 10,
+    marginTop: '10px',
+    backgroundColor: 'white',
+    color: 'blue'
+  },
+  validateButton: {
     backgroundColor: 'white',
     color: 'blue'
   },
@@ -53,7 +61,7 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     color: 'black'
   },
   addIconButton: {
-    paddingLeft: 10,
+    margin: 10,
     backgroundColor: 'white',
     color: 'blue'
   },
@@ -61,15 +69,27 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     backgroundColor: 'white',
     borderRadius: '4px',
     color: 'black',
-    margin: '10px',
-    width: '200px'
-
+    margin: '10px'
   },
   switchButton: {
     position: 'fixed',
     bottom: '10px',
     left: '7%',
-    marginLeft: '-104.5px'
+    marginLeft: '-104.5px',
+    margin: '10px'
+  },
+  stepsInfo: {
+    overflow:'auto',
+    height: '300px',
+    padding: 0
+  },
+  blockSearch: {
+    alignItems: 'center'
+  },
+  addressesInfo: {
+    overflow:'auto',
+    height: '60px',
+    padding: 0
   }
 })
 
