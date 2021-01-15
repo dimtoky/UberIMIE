@@ -243,9 +243,18 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       this.setState({
         addressChoice: '',
         addresses: [],
-        addressTMP: this.state.addressTMP,
+        addressTMP: {
+          value: {
+            lng: 0,
+            lat: 0
+          },
+          label: ''
+        },
         tabAddressTMP: [],
-        start: this.state.start,
+        start: {
+          lng: 0,
+          lat: 0
+        },
         tabAdressesName: [],
         steps: []
 
