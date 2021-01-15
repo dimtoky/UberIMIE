@@ -93,7 +93,7 @@ export default class ResetPassword extends React.PureComponent<P & WithStyles<St
         </div>
         <BrowserRouter>
           <Switch>
-            <Redirect to="/auth/forgotPassword" />
+            <Redirect to="/auth/resetpassword" />
           </Switch>
         </BrowserRouter>
       </Container>

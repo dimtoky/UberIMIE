@@ -55,8 +55,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           subheader="Select your addresses:"
           className={classes.subHeader}
         />
-
         <CardContent>
+        <div className={classes.blockSearch}>
           <TextField
             label="Address..."
             variant="outlined"
@@ -72,6 +72,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
             <SearchIcon />
           </IconButton>
+        </div>
 
           <Select
             className={classes.inputSelect}
@@ -109,8 +110,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           <IconButton type="submit" className={classes.addIconButton} aria-label="add" onClick={this.initAddressInputSelection}>
             <AddIcon />
           </IconButton>
-          <Button onClick={() => this.searchItinary(mapLine)} className={classes.iconButton}> Valider</Button>
-          <ul>{listItems}</ul>
+          <Button onClick={() => this.searchItinary(mapLine)} className={classes.validateButton}> Valider</Button>
+
+          <ul className={classes.stepsInfo}>{listItems}</ul>
         </CardContent>
 
 
@@ -157,7 +159,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     var tabSteps: Array<string> = [];
     var tmp: this = this;
     if (this.state.addresses.length > 0) {
-      alert("Calcul de l'initéraire")
+      alert("Calcul de l'initéraire, veuillez patienter...")
       Axios.post('http://127.0.0.1:3001/itinary', {
         start: this.state.start,
         coords: this.state.addresses,
@@ -169,6 +171,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             alert("Aucun Itineraire trouvé.");
           }
           else {
+            console.log(response.data.itinary)
+            alert("Itineraire prêt.")
             for (var itinary of response.data.itinary) {
               for (var coord of itinary.routes[0].legs[0].steps) {
                 tabSteps.push("Dans " + coord.maneuver.bearing_after + "m. " + coord.maneuver.instruction + ".");
