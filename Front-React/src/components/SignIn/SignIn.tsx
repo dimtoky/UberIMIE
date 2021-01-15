@@ -29,7 +29,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
 
   constructor(props: any) {
     super(props);
-    this.state = {id: 1, email: '',password: '', redirect: false};
+    this.state = { id: 1, email: '', password: '', redirect: false };
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -39,7 +39,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
     const { redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to='/drive'/>;
+      return <Redirect to='/drive' />;
     }
     return (
       <Container component="main" maxWidth="xs">
@@ -145,16 +145,16 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
-}).then(response => { 
-  console.log("success" + response.data.data.token)
-  localStorage.setItem('token', response.data.data.token);
-  localStorage.setItem('email', this.state.email);
-  this.setState({ redirect: true })
-})
-.catch(error => {
-    console.log(error.response)
-})
-      
+      }).then(response => {
+        console.log("success" + response.data.data.token)
+        localStorage.setItem('token', response.data.data.token);
+        localStorage.setItem('email', this.state.email);
+        this.setState({ redirect: true })
+      })
+        .catch(error => {
+          console.log(error.response)
+        })
+
     )
   }
 
