@@ -158,6 +158,7 @@ export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> 
 }).then(response => { 
   console.log("success" + response.data.data.token)
   localStorage.setItem('token', response.data.data.token);
+  localStorage.setItem('email', this.state.email);
   this.setState({ redirect: true })
 })
 .catch(error => {
