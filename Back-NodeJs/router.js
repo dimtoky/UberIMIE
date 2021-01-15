@@ -23,9 +23,9 @@ exports.router = (function () {
     // Itinary routes
     router.route('/itinerary/').post(itinaryController.dijkstraTest);
 
-    router.route('/itinary/save/').post( historyController.newHistory);
+    router.route('/itinerary/save/').post( historyController.newHistory);
 
-    router.route('/itinary/load/').post( historyController.getHistory);
+    router.route('/itinerary/load/').post( historyController.getHistory);
 
 
 

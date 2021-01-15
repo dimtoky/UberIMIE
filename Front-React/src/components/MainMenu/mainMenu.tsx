@@ -138,6 +138,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           <ul className={classes.addressesInfo}>{listItemsAddresses}</ul>
           <ul className={classes.stepsInfo}>{listItems}</ul>
         </CardContent>
+
+        <Button className={classes.switchButton} href="/history" variant="contained">Historique</Button>
+
       </Card>
      
     );
@@ -254,7 +257,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
   saveItinary = () => {
 
       alert("Itinéraire sauvegardée")
-      Axios.post('http://127.0.0.1:30001/itinary/save', {
+      Axios.post('http://127.0.0.1:30001/itinerary/save', {
         email: 'test',
         data: {
         start: this.state.start,

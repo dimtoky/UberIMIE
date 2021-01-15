@@ -13,7 +13,7 @@ interface S {
 
 
 export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
-  public apiUrl: string = 'http://localhost:30001/itinary/load';
+  public apiUrl: string = 'http://localhost:3001/itinerary/load';
   public state: Readonly<S>;
   public static Display = withStyles(styles as any)(HistoryMenu) as React.ComponentType<P>
   constructor(props: any) {
@@ -32,7 +32,7 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         'Content-Type': 'application/json; charset=UTF-8'
       }
     }).then(response => {
-      console.log(response.data.histories[0])
+      console.log(response.data.histories)
       this.setState({itineraries : response.data.histories})
     })
       .catch(error => {
@@ -77,7 +77,7 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
   loadItinerary = (mapLineFunction: (coords: Array<any>, zoom: number) => void, itinerary: any) => {
     console.log(itinerary);
     //alert(itinerary);
-    Axios.post('http://127.0.0.1:30001/itinary', {
+    Axios.post('http://127.0.0.1:3001/itinerary', {
       start: itinerary.start,
       coords: itinerary.coords,
       len: itinerary.len
