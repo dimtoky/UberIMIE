@@ -8,16 +8,19 @@ import Axios from 'axios';
 interface P { mapLine: (coords: Array<any>, zoom: number) => void }
 interface S {
   itineraries: Array<any>,
+  email: string|null
 }
 
 
 export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
+  public apiUrl: string = 'http://localhost:3001/itinary/load';
   public state: Readonly<S>;
   public static Display = withStyles(styles as any)(HistoryMenu) as React.ComponentType<P>
   constructor(props: any) {
     super(props);
     this.state = {
-      itineraries: []
+      itineraries: [],
+      email: localStorage.getItem('email')
     }
   }
 
