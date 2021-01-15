@@ -1,6 +1,6 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "root" | "media" | "expand" | "avatar" | "input" | "subHeader" | "iconButton" | "select" | "addIconButton" | "inputSelect"; // add class create
+export type Styles = "root" | "media" | "expand" | "avatar" | "input" | "subHeader" | "iconButton" | "select" | "addIconButton" | "inputSelect" | "switchButton"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
   root: {
     display: 'block',
@@ -64,6 +64,12 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
     margin: '10px',
     width: '200px'
 
+  },
+  switchButton: {
+    position: 'fixed',
+    bottom: '10px',
+    left: '7%',
+    marginLeft: '-104.5px'
   }
 })
 

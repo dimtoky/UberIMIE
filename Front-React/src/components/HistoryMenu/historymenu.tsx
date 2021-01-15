@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, withStyles, WithStyles, List, ListItem, ListItemText  } from '@material-ui/core';
+import { Card, CardContent, CardHeader, withStyles, WithStyles, List, ListItem, ListItemText, Button  } from '@material-ui/core';
 import styles, { Styles } from './styles';
 import Avatar from '@material-ui/core/Avatar';
 import Axios from 'axios';
@@ -68,6 +68,7 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       </List>
         </CardContent>
 
+        <Button className={classes.switchButton} href="/drive" variant="contained">Génerateur</Button>
 
       </Card>
     );

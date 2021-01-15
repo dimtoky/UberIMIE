@@ -115,9 +115,10 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           <Button disabled={!this.state.canSave} onClick={() => this.saveItinary()} className={classes.iconButton}> Sauvegarder</Button>
           <ul>{listItems}</ul>
         </CardContent>
-
+        <Button className={classes.switchButton} href="/history" variant="contained">Historique</Button>
 
       </Card>
+     
     );
   }
 
