@@ -7,17 +7,17 @@ const cors = require('cors');
 const app = express();
 
 mongoose.connect(
-    "secret",
+  "mongodb+srv://root:wamwnz11DmcpxtDq@clusterimie.euvgs.mongodb.net/imiebd?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   },
   () => console.log("connected to db")
-  );
+);
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 

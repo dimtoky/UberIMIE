@@ -5,7 +5,7 @@ const User = require("../models/User");
 const { registerValidation, loginValidation } = require('../utils/validation');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey('secret');
 
 //Routes
 module.exports = {
@@ -99,14 +99,16 @@ module.exports = {
                 user.save()
                     .then(user => {
                         // send email
-                        let link = "http://localhost/api/auth/reset/" + user.resetPasswordToken;
+                        let link = "http://localhost:3000/resetpassword/" + user.resetPasswordToken;
                         const mailOptions = {
                             to: user.email,
                             from: 'dimension43@hotmail.fr',
-                            subject: "Password change request",
-                            text: `Hi ${user.name} \n 
-                        Please click on the following link ${link} to reset your password. \n\n 
-                        If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+                            subject: "Uber - Demande de réinitialisation du mot de passe",
+                            html: `<p style="text-align: center">Bonjour ${user.name}</p>
+                            <p style="text-align: center">Ton mot de passe Uber peut être réinitialisé en cliquant sur le lien ci-dessous.</p>
+                            <a href="${link}" style="display:block; text-align: center">Lien de réinitialisation du mot de passe</a>
+                            <p style="text-align: center">Si tu n'as pas demandé un nouveau mot de passe, ignore cet e-mail.</p>
+                               `,
                         };
 
                         sgMail.send(mailOptions, (error, result) => {
@@ -155,10 +157,10 @@ module.exports = {
                     // send email
                     const mailOptions = {
                         to: user.email,
-                        from: process.env.FROM_EMAIL,
-                        subject: "Your password has been changed",
+                        from: 'dimension43@hotmail.fr',
+                        subject: "Uber - réinitialisation du mot de passe réussie",
                         text: `Hi ${user.username} \n 
-                        This is a confirmation that the password for your account ${user.email} has just been changed.\n`
+                        Nous vous confirmons que le mot de passe associé à la boite mail ${user.email} a été modifié avec succés.\n`
                     };
 
                     sgMail.send(mailOptions, (error, result) => {
@@ -169,6 +171,4 @@ module.exports = {
                 });
             });
     }
-
-
 }

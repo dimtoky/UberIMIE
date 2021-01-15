@@ -5,3 +5,4 @@ Front-React/.DS_Store
 Back-NodeJs/.DS_Store
 Front-React/src/.DS_Store
 *.http
+node_modules

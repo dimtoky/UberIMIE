@@ -1,7 +1,6 @@
-export default interface UserInterface{
+export default interface UserInterface {
     id?: number;
-    lastName?: string;
-    firstName?: string;
+    name?: string;
     email: string;
     password?: string;
 }

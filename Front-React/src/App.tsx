@@ -1,26 +1,21 @@
 import React from "react";
-import {
-  Switch,
-  Route,
-  BrowserRouter,
-  Redirect
-} from "react-router-dom";
-import SignUp from "./components/signUp/SignUp";
-import SignIn from "./components/SignIn/SignIn";
-import ForgotPassword from "./components/ForgotPassword/forgotPassword";
-import { Layout } from "./Layout/Layout";
 import "./App.css";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { LayoutAuth } from "./Layout/LayoutAuth/Layout";
+import { LayoutGame } from "./Layout/LayoutGame/Layout";
+import { LayoutHistory } from "./Layout/LayoutHistory/Layout";
+
 
 export default function App() {
   return (
     <BrowserRouter>
         <Switch>
-          <Route exact={true} path='/' component={SignIn.Display}/>
-          <Route exact={true} path='/SignUp' component={SignUp.Display}/>
-          <Route exact={true} path= '/drive' component={Layout.Display} />
-          <Route exact={true} path= '/forgotPassword' component={ForgotPassword.Display} />
-          <Redirect to="/"/>
+            <Route path='/auth' component={LayoutAuth.Display} />
+            <Route path='/drive' component={LayoutGame.Display} />
+            <Route path='/history' component={LayoutHistory.Display} />
+            <Redirect to="/auth/signIn" />
         </Switch>
     </BrowserRouter>
+
   );
 }
