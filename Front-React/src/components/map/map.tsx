@@ -1,11 +1,15 @@
 import { withStyles, WithStyles } from "@material-ui/core";
 import * as React from "react";
 import { MainMenu } from "../MainMenu/mainMenu";
+import { HistoryMenu } from "../HistoryMenu/historymenu";
+
 import styles, { Styles } from "./styles";
 import "./styles.tsx";
 import mapboxgl from "mapbox-gl";
 
-interface P { }
+interface P {
+    isHistory: boolean;
+ }
 interface S {
     coords: Array<any>;
     center: [number, number];
@@ -25,6 +29,7 @@ export default class Map extends React.PureComponent<P & WithStyles<Styles>, S> 
     render() {
         const { classes } = this.props;
         const tab: Array<any> = this.state.coords;
+        const isHistory =  this.props.isHistory;
         mapboxgl.accessToken =
             "pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A";
 
@@ -71,11 +76,25 @@ export default class Map extends React.PureComponent<P & WithStyles<Styles>, S> 
                 },
             });
         });
+        if (isHistory) {
         return (
             <div id="geocoding" className={classes.mainMenu}>
-                <MainMenu.Display mapLine={this.addItinaryLine} />
+           
+           
+           <HistoryMenu.Display mapLine={this.addItinaryLine} />
+
             </div>
         );
+    }else{
+    return (
+        <div id="geocoding" className={classes.mainMenu}>
+       
+       <MainMenu.Display mapLine={this.addItinaryLine} />
+
+              
+
+        </div>
+    );}
     }
 
     addItinaryLine = (coords: Array<any>, zoom: number) => {
