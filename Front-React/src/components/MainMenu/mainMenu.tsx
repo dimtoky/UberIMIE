@@ -112,7 +112,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             <AddIcon />
           </IconButton>
           <Button onClick={() => this.searchItinary(mapLine)} className={classes.iconButton}> Valider</Button>
-          <Button disabled={!this.state.canSave} onClick={() => this.saveItinary(mapLine)} className={classes.iconButton}> Sauvegarder</Button>
+          <Button disabled={!this.state.canSave} onClick={() => this.saveItinary()} className={classes.iconButton}> Sauvegarder</Button>
           <ul>{listItems}</ul>
         </CardContent>
 
@@ -164,7 +164,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         canSave: true 
       });
       alert("Calcul de l'initéraire")
-      Axios.post('http://127.0.0.1:3001/itinary', {
+      Axios.post('http://127.0.0.1:30001/itinary', {
         start: this.state.start,
         coords: this.state.addresses,
         len: this.state.addresses.length
@@ -195,11 +195,11 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     }
   }
 
-  saveItinary = (mapLineFunction: (coords: Array<any>, zoom: number) => void) => {
+  saveItinary = () => {
 
     if (this.state.addresses.length > 0) {
       alert("Itinéraire sauvegardée")
-      Axios.post('http://127.0.0.1:3001/itinary/save', {
+      Axios.post('http://127.0.0.1:30001/itinary/save', {
         email: 'test',
         data: {
         start: this.state.start,

@@ -13,29 +13,12 @@ module.exports = {
 
     getHistory: async (req, res) => {
         let email = req.body.email
+       
+       const histories = await History.find({email: email});
 
+       console.log(histories);
 
-        // validate the user
-        const { error } = registerValidation(req.body);
-        if (error)
-            return res.status(400).json({ error: error.details[0].message });
-
-
-        const isEmailExist = await User.findOne({ email: email });
-        if (isEmailExist)
-            return res.status(400).json({ error: "Email doesn`t exists" });
-        console.log(isEmailExist);
-        const history = new History({
-            email: email
-        });
-        try {
-            const savedUser = history.save();
-            return res.status(200).json({ error: null, data: savedUser });
-        } catch (error) {
-            return res.status(400).json({ error });
-        }
-
-
+       return res.status(200).json({histories});
 
     },
 

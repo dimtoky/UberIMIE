@@ -25,7 +25,7 @@ exports.router = (function () {
 
     router.route('/itinary/save/').post( historyController.newHistory);
 
-    router.route('/itinary/load/').get( historyController.newHistory);
+    router.route('/itinary/load/').post( historyController.getHistory);
 
 
 
