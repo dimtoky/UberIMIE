@@ -127,6 +127,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     Axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?country=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A')
       .then(function (response) {
         if (response.data.features) {
+          alert("Adresse trouvée. La liste à été mise à jour.")
           addressResponse = response.data.features;
           for (var addr of addressResponse) {
             tab.push({
@@ -175,7 +176,14 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             alert("Itineraire prêt.")
             for (var itinary of response.data.itinary) {
               for (var coord of itinary.routes[0].legs[0].steps) {
-                tabSteps.push("Dans " + coord.maneuver.bearing_after + "m. " + coord.maneuver.instruction + ".");
+                console.log(coord.maneuver)
+                if(coord.maneuver.type === 'depart' || coord.maneuver.type === 'arrive') {
+                  tabSteps.push( coord.maneuver.instruction + ".");
+
+                }
+                else {
+                  tabSteps.push( coord.maneuver.instruction + ". Dans " + coord.maneuver.bearing_before + "m. ");
+                } 
                 for (var item of coord.geometry.coordinates) {
                   tabCoord.push(item);
                 }

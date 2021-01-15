@@ -1,7 +1,6 @@
-process.env.NODE_ENV = 'test';
+//******************* to run the all test npm run **************************
 
-let mongoose = require("mongoose");
-//Require the dev-dependencies
+process.env.NODE_ENV = 'test';
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../index');
