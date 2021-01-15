@@ -50,11 +50,13 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
 
   render() {
     const { classes, mapLine } = this.props;
-    const listItems = this.state.steps.map((indication) =>
-      <li key={indication}>{indication}</li>
+    const listItems = this.state.steps.map((indication, index) => {
+      return(<li key={index}>{indication}</li>)
+    }
     );
-    const listItemsAddresses = this.state.tabAddressTMP.map((addresses) =>
-      <li key={addresses}>{addresses}</li>
+    const listItemsAddresses = this.state.tabAddressTMP.map((addresses) => {
+      return(<li key={addresses}>{addresses}</li>)
+    }
     );
     return (
       <Card className={classes.root}>
