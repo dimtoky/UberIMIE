@@ -141,11 +141,7 @@ module.exports = {
     // @desc Reset Password
     // @access Public
     resetPassword: (req, res) => {
-        console.log(req.body.token)
-
-        token = req.body.token
-
-        User.findOne({resetPasswordToken: token, resetPasswordExpires: {$gt: Date.now()}})
+        User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } })
             .then((user) => {
                 if (!user) return res.status(401).json({ message: 'Password reset token is invalid or has expired.' });
 
@@ -175,6 +171,4 @@ module.exports = {
                 });
             });
     }
-
-
 }

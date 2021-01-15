@@ -13,12 +13,9 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx";
 import Axios from 'axios';
-import {
-  RouteComponentProps
-} from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
-
-type TParams =  { token: string };
+type TParams = { token: string };
 interface P {
 }
 interface S {
@@ -27,142 +24,136 @@ interface S {
   passwdStatus: boolean
 }
 
-
-
-
 export default class ResetPassword extends React.PureComponent<P & WithStyles<Styles>, S> {
   public state: Readonly<S>;
-  public apiUrl: string = 'http://localhost:3001/users/resetpswd/';
-   
+  public apiUrl: string = 'http://localhost:30001/users/resetpswd/';
+
   constructor(props: any) {
     super(props);
-    this.state = {  password: '',  resetToken: this.token(props) ,passwdStatus: false};
+    this.state = { password: '', resetToken: this.token(props), passwdStatus: false };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.token(props);
     console.log(this.state)
   }
 
-   token({ match }: RouteComponentProps<TParams>) {               
-     return match.params.token;
-   }
-
+  token({ match }: RouteComponentProps<TParams>) {
+    return match.params.token;
+  }
 
   public static Display = withStyles(styles as any)(ResetPassword) as React.ComponentType<P>
 
-  
   render() {
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Reset your Password 
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Reset your Password
             </Typography>
-            <form className={classes.form} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
+          <form className={classes.form} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
                 <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    onChange={this.onChangePassword}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="confirm_password"
-                    label="Confirm Password"
-                    type="password"
-                    id="confirm_password"
-                    autoComplete="current-password"
-                    onChange={this.onChangeConfirmPassword}
-                    
-                  />
-                </Grid>
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.onChangePassword}
+                />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-               Send
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="confirm_password"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirm_password"
+                  autoComplete="current-password"
+                  onChange={this.onChangeConfirmPassword}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Send
               </Button>
-            </form>
-          </div>
-          <Box mt={5}>
-            <Copyright />
-          </Box>
-        </Container>
-      );
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Container>
+    );
 
-      function Copyright() {
-        return (
-          <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-              Your Website
+    function Copyright() {
+      return (
+        <Typography variant="body2" color="textSecondary" align="center">
+          {'Copyright © '}
+          <Link color="inherit" href="https://material-ui.com/">
+            Your Website
             </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-          </Typography>
-        );
-      }
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
+      );
     }
+  }
 
-    
+
   onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const passwd = event.target.value;
-      this.setState({
-          password: passwd
+    const passwd: string = event.target.value;
+    this.setState({
+      password: passwd
     });
   }
 
   onChangeConfirmPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const confirmPasswd = event.target.value;
-    if(confirmPasswd === this.state.password) {  
-    this.setState({
+    const confirmPasswd: string = event.target.value;
+    if (confirmPasswd === this.state.password) {
+      this.setState({
         passwdStatus: true
-    });
+      });
     }
     else {
       this.setState({
-        passwdStatus: false 
-    });
+        passwdStatus: false
+      });
     }
   }
 
-    handleSubmit(event: any) {
-      event.preventDefault();
-      return (
-        Axios.post(this.apiUrl, {
-          password: this.state.password,
-          token: this.state.resetToken,
-      },{
-          headers: {
-              'Content-Type': 'application/json; charset=UTF-8'
-          }
-  }).then(response => { 
-    console.log(response)
-  })
-  .catch(error => {
-      console.log(error.response)
-  })
-      );
-    }
+  handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+    return (
+      Axios.post(this.apiUrl, {
+        password: this.state.password,
+        token: this.state.resetToken,
+      }, {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      }).then(response => {
+        console.log(response)
+      })
+        .catch(error => {
+          console.log(error.response)
+        })
+    );
+  }
 }

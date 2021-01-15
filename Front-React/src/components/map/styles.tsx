@@ -1,22 +1,18 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type Styles = "map"|"mainMenu"|"container"; // add class create
+export type Styles = "mainMenu" | "container"; // add class create
 const styles = (theme: Theme) => createStyles<Styles, {}>({
-    map:{
-      height: '100vh',
-       Maxheight: '100vh',
-       zIndex: 1,
-    },
-    mainMenu: {
-      top: '200px',
-      marginLeft: '60px',
-      zIndex: 2,
-      position: 'absolute',
-      minHeight: '200px'
-    },
-    container: {
-      maxHeight: '100vh'
-    }
+  container: {
+    maxHeight: '100%'
+  },
+  mainMenu: {
+    top: '0px',
+    marginLeft: '0px',
+    position: 'absolute',
+    minHeight: '200px',
+    height: '100%',
+    width: '30%',
+  }
 
 });
 

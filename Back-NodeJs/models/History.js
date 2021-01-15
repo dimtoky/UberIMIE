@@ -7,6 +7,7 @@ const historySchema = new mongoose.Schema({
     min: 6,
     max: 255
   },
+  itineraryData: Object,
   date: {
     type: Date
     }
