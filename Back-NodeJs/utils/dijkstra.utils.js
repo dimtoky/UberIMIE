@@ -47,8 +47,13 @@ const dijkstra = async (startPosition, tabCoord, len) => {
         tabLen--;
         tab.splice(indexMinDuration, 1);
         nbRoutes--;
-        lng = minDuration.waypoints[1].location[0];
-        lat = minDuration.waypoints[1].location[1];
+        if(minDuration.waypoints[1]) {
+            lng = minDuration.waypoints[1].location[0];
+            lat = minDuration.waypoints[1].location[1];
+        }
+        else {
+            return [];
+        }
         minDuration = undefined;
     }
     return result;

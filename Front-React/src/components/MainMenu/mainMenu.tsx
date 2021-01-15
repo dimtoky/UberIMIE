@@ -244,10 +244,10 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         addressChoice: '',
         addresses: [],
         addressTMP: this.state.addressTMP,
-        tabAddressTMP: this.state.tabAddressTMP,
+        tabAddressTMP: [],
         start: this.state.start,
         tabAdressesName: [],
-        steps: this.state.steps
+        steps: []
 
       })
     }
