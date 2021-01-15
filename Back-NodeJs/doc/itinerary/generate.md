@@ -9,7 +9,7 @@ Route to get all Itinerary
 
 **Method** : `POST`
 
-**Auth required** : `NO`
+**Auth required** : `YES`
 
 **Request**
 
