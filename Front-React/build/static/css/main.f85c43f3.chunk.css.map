@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,UAEI,QAEJ,CAIA,gBALI,WAOJ","file":"main.f85c43f3.chunk.css","sourcesContent":["body,\r\nhtml {\r\n    margin: 0;\r\n    height: 100%;\r\n}\r\n/* div {\r\n    height: 100%;\r\n} */\r\n#root {\r\n    height: 100%;\r\n}"]}
