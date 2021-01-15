@@ -14,7 +14,8 @@ interface S {
   start: coordonees
   addressChoice: string,
   tabAdressesName: Array<AddressType>,
-  steps: Array<string>
+  steps: Array<string>,
+  canSave: boolean
 }
 interface AddressType {
   value: coordonees;
@@ -34,7 +35,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       addresses: [],
       addressChoice: '',
       tabAdressesName: [],
-      steps: []
+      steps: [],
+      canSave: false
     }
   }
 
@@ -87,7 +89,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                     tabAdressesName: this.state.tabAdressesName,
                     addresses: this.state.addresses,
                     start: event.value,
-                    steps: this.state.steps
+                    steps: this.state.steps,
                   });
                 }
                 else {
@@ -98,7 +100,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                     tabAdressesName: this.state.tabAdressesName,
                     addresses: tab,
                     start: this.state.start,
-                    steps: this.state.steps
+                    steps: this.state.steps,
                   });
                 }
               }
@@ -110,6 +112,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             <AddIcon />
           </IconButton>
           <Button onClick={() => this.searchItinary(mapLine)} className={classes.iconButton}> Valider</Button>
+          <Button disabled={!this.state.canSave} onClick={() => this.saveItinary(mapLine)} className={classes.iconButton}> Sauvegarder</Button>
           <ul>{listItems}</ul>
         </CardContent>
 
@@ -157,6 +160,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     var tabSteps: Array<string> = [];
     var tmp: this = this;
     if (this.state.addresses.length > 0) {
+      this.setState({
+        canSave: true 
+      });
       alert("Calcul de l'initéraire")
       Axios.post('http://127.0.0.1:3001/itinary', {
         start: this.state.start,
@@ -180,6 +186,28 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             mapLineFunction(tabCoord, 10);
             tmp.fetchSteps(tabSteps);
           }
+        }).catch(function (error) {
+          console.error(error);
+        });
+    }
+    else {
+      alert("Nombre d'adresse insufisant.");
+    }
+  }
+
+  saveItinary = (mapLineFunction: (coords: Array<any>, zoom: number) => void) => {
+
+    if (this.state.addresses.length > 0) {
+      alert("Itinéraire sauvegardée")
+      Axios.post('http://127.0.0.1:3001/itinary/save', {
+        email: 'test',
+        data: {
+        start: this.state.start,
+        coords: this.state.addresses,
+        len: this.state.addresses.length}
+      })
+        .then(function (response) {
+          console.log(response)
         }).catch(function (error) {
           console.error(error);
         });

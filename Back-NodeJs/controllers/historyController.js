@@ -41,40 +41,15 @@ module.exports = {
 
     newHistory: async (req, res) => {
         let email = req.body.email
-        // let password = req.body.password
-        // // validate  user
-        // const { error } = loginValidation(req.body);
-        // // throw validation errors
-        // if (error)
-        //     return res.status(400).json({ error: error.details[0].message });
-
-        // const user = await User.findOne({ email: email });
-        // // throw error when email is wrong
-        // if (!user)
-        //     return res.status(400).json({ error: "Email is wrong" });
-        // // check for password correctness
-        // const validPassword = await bcrypt.compare(password, user.password);
-
-        // if (!validPassword)
-        //     return res.status(400).json({ error: "Password is wrong" });
-
-
-        // const token = jwtUtils.generateTokenForUser(user)
-
-        // res.status(200).json({
-        //     error: null,
-        //     data: {
-        //         message: "Login successful",
-        //         token: token
-        //     },
-        // });
+        let data = req.body.data
         console.log(email);
         const history = new History({
             email: email,
+            itineraryData: data
         });
         try {
-            const savedUser = await history.save();
-            return res.status(200).json({ error: null, data: savedUser });
+            const savedItinerary = await history.save();
+            return res.status(200).json({ error: null, savedItinerary });
         } catch (error) {
             return res.status(400).json({ error });
         }
