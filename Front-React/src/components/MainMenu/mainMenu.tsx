@@ -205,7 +205,11 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         start: this.state.start,
         coords: this.state.addresses,
         len: this.state.addresses.length
-      })
+      }, {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'auth-token': localStorage.getItem('token')
+        }})
         .then(function (response) {
           let tabCoord: Array<any> = [];
           if (response.data.itinerary === []) {
@@ -246,7 +250,11 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             tmp.fetchSteps(tabSteps);
           }
         }).catch(function (error) {
-          console.error(error);
+          console.error(error.response.status);
+          if (error.response.status === (401 || 400)) {
+            alert("Connexion refusée")
+
+          }
         });
     }
     else {
@@ -257,8 +265,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
   saveItinary = () => {
 
       alert("Itinéraire sauvegardée")
-      Axios.post('http://127.0.0.1:30001/itinerary/save', {
-        email: 'test',
+      Axios.post('http://127.0.0.1:3001/itinerary/save', {
+        email: localStorage.getItem('email'),
         data: {
         start: this.state.start,
         coords: this.state.addresses,

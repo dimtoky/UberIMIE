@@ -25,7 +25,7 @@ interface S {
 
 export default class SignIn extends React.PureComponent<P & WithStyles<Styles>> {
   public state: Readonly<S>;
-  public apiUrl: string = 'http://localhost:30001/users/login/';
+  public apiUrl: string = 'http://localhost:3001/users/login/';
 
   constructor(props: any) {
     super(props);

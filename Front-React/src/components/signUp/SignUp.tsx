@@ -23,7 +23,7 @@ interface S {
 
 export default class SignUp extends React.PureComponent<P & WithStyles<Styles>> {
   public state: Readonly<S>;
-  public apiUrl: string = 'http://localhost:30001/users/register';
+  public apiUrl: string = 'http://localhost:3001/users/register';
   constructor(props: any) {
     super(props);
     this.state = {

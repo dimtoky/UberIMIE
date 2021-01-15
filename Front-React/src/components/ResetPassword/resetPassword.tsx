@@ -23,7 +23,7 @@ interface S {
 
 export default class ResetPassword extends React.PureComponent<P & WithStyles<Styles>, S> {
   public state: Readonly<S>;
-  public apiUrl: string = 'http://localhost:30001/users/resetpswd/';
+  public apiUrl: string = 'http://localhost:3001/users/resetpswd/';
 
   constructor(props: any) {
     super(props);

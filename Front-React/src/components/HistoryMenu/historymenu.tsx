@@ -20,8 +20,8 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     super(props);
     this.state = {
       itineraries: [],
-     // email: localStorage.getItem('email')
-     email: "test"
+     email: localStorage.getItem('email')
+     //email: "test"
     }
   }
   componentDidMount () {
@@ -29,7 +29,8 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       email: this.state.email,
     }, {
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'auth-token': localStorage.getItem('token')
       }
     }).then(response => {
       console.log(response.data.histories)
@@ -37,6 +38,10 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     })
       .catch(error => {
         console.log(error.response)
+        if (error.response.status === (401 | 400)) {
+          alert("Connexion refusée")
+
+        }
       })
   }
   render() {
@@ -81,15 +86,19 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       start: itinerary.start,
       coords: itinerary.coords,
       len: itinerary.len
-    })
+    }, {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'auth-token': localStorage.getItem('token')
+      }})
       .then(function (response) {
         let tabCoord: Array<any> = [];
-        if (response.data.itinary === []) {
+        if (response.data.itinerary === []) {
           alert("Aucun Itineraire trouvé.");
         }
         else {
-          for (var itinary of response.data.itinary) {
-            for (var coord of itinary.routes[0].legs[0].steps) {
+          for (var itinerary of response.data.itinerary) {
+            for (var coord of itinerary.routes[0].legs[0].steps) {
               for (var item of coord.geometry.coordinates) {
                 tabCoord.push(item);
               }
@@ -99,6 +108,10 @@ export class HistoryMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         }
       }).catch(function (error) {
         console.error(error);
+        if (error.response.status === (401 || 400)) {
+          alert("Connexion refusée")
+
+        }
       });
   }
 
