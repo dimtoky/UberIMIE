@@ -51,11 +51,11 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
   render() {
     const { classes, mapLine } = this.props;
     const listItems = this.state.steps.map((indication, index) => {
-      return(<li key={index}>{indication}</li>)
+      return (<li key={index}>{indication}</li>)
     }
     );
     const listItemsAddresses = this.state.tabAddressTMP.map((addresses) => {
-      return(<li key={addresses}>{addresses}</li>)
+      return (<li key={addresses}>{addresses}</li>)
     }
     );
     return (
@@ -240,6 +240,16 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
         }).catch(function (error) {
           console.error(error);
         });
+      this.setState({
+        addressChoice: '',
+        addresses: [],
+        addressTMP: this.state.addressTMP,
+        tabAddressTMP: this.state.tabAddressTMP,
+        start: this.state.start,
+        tabAdressesName: [],
+        steps: this.state.steps
+
+      })
     }
     else {
       alert("Nombre d'adresse insufisant.");
@@ -250,14 +260,28 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     var tab: Array<coordonees> = this.state.addresses;
     var tabAddrTmp: Array<string> = this.state.tabAddressTMP;
 
+
     if (!tabAddrTmp.includes(this.state.addressTMP.label)) {
       tabAddrTmp.push(this.state.addressTMP.label);
-      tab.push(this.state.addressTMP.value)
+      if (tab.length > 0) {
+        tab.push(this.state.addressTMP.value);
+      }
     }
     else {
       alert("Vous avez déjà choisie cette adresse.");
+      this.setState({
+        start: this.state.start,
+        addresses: tab,
+        addressChoice: '',
+        tabAdressesName: [],
+        steps: [],
+        addressTMP: this.state.addressTMP,
+        tabAddressTMP: tabAddrTmp
+      });
       return 0;
     }
+
+
     this.setState({
       start: this.state.start,
       addresses: tab,
