@@ -3,7 +3,7 @@ import { createStyles, Theme } from "@material-ui/core";
 export type Styles = 
 "root" | "media" | "expand" | "avatar" | "input" | "subHeader" 
 | "iconButton" | "select" | "addIconButton" | "inputSelect"
-| "stepsInfo" | "blockSearch" | "validateButton";
+| "stepsInfo" | "blockSearch" | "validateButton" | "addressesInfo";
 
 const styles = (theme: Theme) => createStyles<Styles, {}>({
   root: {
@@ -78,6 +78,11 @@ const styles = (theme: Theme) => createStyles<Styles, {}>({
   },
   blockSearch: {
     alignItems: 'center'
+  },
+  addressesInfo: {
+    overflow:'auto',
+    height: '60px',
+    padding: 0
   }
 })
 

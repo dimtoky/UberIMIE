@@ -14,7 +14,9 @@ interface S {
   start: coordonees
   addressChoice: string,
   tabAdressesName: Array<AddressType>,
-  steps: Array<string>
+  steps: Array<string>,
+  addressTMP: AddressType,
+  tabAddressTMP: Array<string>
 }
 interface AddressType {
   value: coordonees;
@@ -34,14 +36,25 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       addresses: [],
       addressChoice: '',
       tabAdressesName: [],
-      steps: []
+      steps: [],
+      addressTMP: {
+        value: {
+          lng: 0,
+          lat: 0
+        },
+        label: ''
+      },
+      tabAddressTMP: []
     }
   }
 
   render() {
     const { classes, mapLine } = this.props;
     const listItems = this.state.steps.map((indication) =>
-      <li>{indication}</li>
+      <li key={indication}>{indication}</li>
+    );
+    const listItemsAddresses = this.state.tabAddressTMP.map((addresses) =>
+      <li key={addresses}>{addresses}</li>
     );
     return (
       <Card className={classes.root}>
@@ -65,7 +78,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                 addressChoice: event.target.value,
                 tabAdressesName: this.state.tabAdressesName,
                 addresses: this.state.addresses,
-                start: this.state.start
+                start: this.state.start,
+                addressTMP: this.state.addressTMP,
+                tabAddressTMP: this.state.tabAddressTMP
               })}
               className={classes.input}
             />
@@ -88,7 +103,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                     tabAdressesName: this.state.tabAdressesName,
                     addresses: this.state.addresses,
                     start: event.value,
-                    steps: this.state.steps
+                    steps: this.state.steps,
+                    addressTMP: event,
+                    tabAddressTMP: this.state.tabAddressTMP
                   });
                 }
                 else {
@@ -99,7 +116,9 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
                     tabAdressesName: this.state.tabAdressesName,
                     addresses: tab,
                     start: this.state.start,
-                    steps: this.state.steps
+                    steps: this.state.steps,
+                    addressTMP: event,
+                    tabAddressTMP: this.state.tabAddressTMP
                   });
                 }
               }
@@ -111,7 +130,7 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             <AddIcon />
           </IconButton>
           <Button onClick={() => this.searchItinary(mapLine)} className={classes.validateButton}> Valider</Button>
-
+          <ul className={classes.addressesInfo}>{listItemsAddresses}</ul>
           <ul className={classes.stepsInfo}>{listItems}</ul>
         </CardContent>
 
@@ -124,32 +143,38 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     const address = this.state.addressChoice;
     var addressResponse: Array<any>;
     var tab: AddressType[] = [];
-    Axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?country=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A')
-      .then(function (response) {
-        if (response.data.features) {
-          addressResponse = response.data.features;
-          if (addressResponse.length > 0) {
-            alert("Adresse trouvée. La liste à été mise à jour.")
-            for (var addr of addressResponse) {
-              tab.push({
-                value: { lat: addr.geometry.coordinates[1], lng: addr.geometry.coordinates[0] },
-                label: addr.place_name
-              });
+    if (!(address === '' || address === ' ')) {
+      Axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?country=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A')
+        .then(function (response) {
+          if (response.data.features) {
+            addressResponse = response.data.features;
+            if (addressResponse.length > 0) {
+              alert("Adresse trouvée. La liste à été mise à jour.")
+              for (var addr of addressResponse) {
+
+                tab.push({
+                  value: { lat: addr.geometry.coordinates[1], lng: addr.geometry.coordinates[0] },
+                  label: addr.place_name
+                });
+              }
+            }
+            else {
+              alert("Aucune adresse trouvé pour ce terme.")
             }
           }
-          else {
-            alert("Aucune adresse trouvé pour ce terme.")
-          }
-        }
-      }).catch(function (error) {
-        console.error(error);
-      });
-    this.setState({
-      addressChoice: this.state.addressChoice,
-      tabAdressesName: tab,
-      addresses: this.state.addresses,
-      start: this.state.start
-    })
+        }).catch(function (error) {
+          console.error(error);
+        });
+      this.setState({
+        addressChoice: this.state.addressChoice,
+        tabAdressesName: tab,
+        addresses: this.state.addresses,
+        start: this.state.start
+      })
+    }
+    else {
+      alert("veuillez entrer une adresse.")
+    }
   }
   handleChange = (selectedOption: AddressType) => {
     this.setState({
@@ -166,36 +191,44 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     var tmp: this = this;
     if (this.state.addresses.length > 0) {
       alert("Calcul de l'initéraire, veuillez patienter...")
-      Axios.post('http://127.0.0.1:3001/itinary', {
+      Axios.post('http://127.0.0.1:3001/itinerary', {
         start: this.state.start,
         coords: this.state.addresses,
         len: this.state.addresses.length
       })
         .then(function (response) {
           let tabCoord: Array<any> = [];
-          if (response.data.itinary === []) {
+          if (response.data.itinerary === []) {
             alert("Aucun Itineraire trouvé.");
           }
           else {
             alert("Itineraire prêt.")
-            var num: number = response.data.itinary[0].routes[0].duration / 60;
-            var hours: number = (num / 60);
-            var rhours: number = Math.floor(hours);
-            var minutes: number = (hours - rhours) * 60;
-            var rminutes: number = Math.round(minutes);
-            tabSteps.push("durée: " + rhours + " hour(s) and " + rminutes + " minute(s).");
-            tabSteps.push("distance: " + (Math.round((response.data.itinary[0].routes[0].distance / 1000) * 100) / 100) + "km");
-            for (var itinary of response.data.itinary) {
-              for (var coord of itinary.routes[0].legs[0].steps) {
+            var num: number = 0,
+              hours: number = 0,
+              rhours: number = 0,
+              minutes: number = 0,
+              rminutes: number = 0,
+              distance: number = 0;
+            for (var item of response.data.itinerary) {
+              num += item.routes[0].duration / 60;
+              hours = (num / 60);
+              rhours = Math.floor(hours);
+              minutes = (hours - rhours) * 60;
+              rminutes = Math.round(minutes);
+              distance += (item.routes[0].distance / 1000);
+            }
+            tabSteps.push("Durée: " + rhours + " hour(s) and " + rminutes + " minute(s).");
+            tabSteps.push("Distance: " + Math.round((distance * 100) / 100) + "km.");
+            for (var itinerary of response.data.itinerary) {
+              for (var coord of itinerary.routes[0].legs[0].steps) {
                 if (coord.maneuver.type === 'depart' || coord.maneuver.type === 'arrive') {
                   tabSteps.push(coord.maneuver.instruction + ".");
-
                 }
                 else {
                   tabSteps.push(coord.maneuver.instruction + ". Dans " + coord.maneuver.bearing_before + "m. ");
                 }
-                for (var item of coord.geometry.coordinates) {
-                  tabCoord.push(item);
+                for (var coordinates of coord.geometry.coordinates) {
+                  tabCoord.push(coordinates);
                 }
               }
             }
@@ -211,15 +244,29 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     }
   }
 
-  initAddressInputSelection = () => {
+  initAddressInputSelection = (): number => {
+    var tab: Array<coordonees> = this.state.addresses;
+    var tabAddrTmp: Array<string> = this.state.tabAddressTMP;
+
+    if (!tabAddrTmp.includes(this.state.addressTMP.label)) {
+      tabAddrTmp.push(this.state.addressTMP.label);
+      tab.push(this.state.addressTMP.value)
+    }
+    else {
+      alert("Vous avez déjà choisie cette adresse.");
+      return 0;
+    }
     this.setState({
       start: this.state.start,
-      addresses: this.state.addresses,
+      addresses: tab,
       addressChoice: '',
       tabAdressesName: [],
-      steps: this.state.steps
+      steps: [],
+      addressTMP: this.state.addressTMP,
+      tabAddressTMP: tabAddrTmp
     });
     alert("Adresse enregistré.")
+    return 1;
   }
 
   public fetchSteps = (tabSteps: Array<string>) => {
@@ -228,7 +275,8 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       addresses: this.state.addresses,
       start: this.state.start,
       tabAdressesName: this.state.tabAdressesName,
-      steps: tabSteps
+      steps: tabSteps,
+      addressTMP: this.state.addressTMP
     })
   }
 }
