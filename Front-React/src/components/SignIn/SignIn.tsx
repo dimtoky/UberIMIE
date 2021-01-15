@@ -11,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import styles, { Styles } from './styles';
 import "./styles.tsx"
 import Axios from 'axios';
-import { BrowserRouter, Link, Redirect, Route, Switch, NavLink } from 'react-router-dom';
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import SignUp from '../signUp/SignUp';
 import ResetPassword from '../ResetPassword/resetPassword';
 

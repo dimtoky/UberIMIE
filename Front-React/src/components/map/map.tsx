@@ -1,6 +1,6 @@
 import { withStyles, WithStyles } from "@material-ui/core";
 import * as React from "react";
-import { MainMenu } from "../MainMenu/MainMenu";
+import { MainMenu } from "../MainMenu/mainMenu";
 import styles, { Styles } from "./styles";
 import "./styles.tsx";
 import mapboxgl from "mapbox-gl";
