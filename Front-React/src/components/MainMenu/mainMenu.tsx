@@ -56,23 +56,23 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
           className={classes.subHeader}
         />
         <CardContent>
-        <div className={classes.blockSearch}>
-          <TextField
-            label="Address..."
-            variant="outlined"
-            InputProps={{ type: 'search' }}
-            onChange={(event) => this.setState({
-              addressChoice: event.target.value,
-              tabAdressesName: this.state.tabAdressesName,
-              addresses: this.state.addresses,
-              start: this.state.start
-            })}
-            className={classes.input}
-          />
-          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
-            <SearchIcon />
-          </IconButton>
-        </div>
+          <div className={classes.blockSearch}>
+            <TextField
+              label="Address..."
+              variant="outlined"
+              InputProps={{ type: 'search' }}
+              onChange={(event) => this.setState({
+                addressChoice: event.target.value,
+                tabAdressesName: this.state.tabAdressesName,
+                addresses: this.state.addresses,
+                start: this.state.start
+              })}
+              className={classes.input}
+            />
+            <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={this.getCoordFromApi}>
+              <SearchIcon />
+            </IconButton>
+          </div>
 
           <Select
             className={classes.inputSelect}
@@ -127,13 +127,18 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
     Axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?country=fr&access_token=pk.eyJ1IjoibWFyY2RldmVsb3BlciIsImEiOiJja2l1M2Y4bHgydzVuMnVxam41NTN1dGRrIn0.5EyahHfPXV8fdllizu949A')
       .then(function (response) {
         if (response.data.features) {
-          alert("Adresse trouvée. La liste à été mise à jour.")
           addressResponse = response.data.features;
-          for (var addr of addressResponse) {
-            tab.push({
-              value: { lat: addr.geometry.coordinates[1], lng: addr.geometry.coordinates[0] },
-              label: addr.place_name
-            });
+          if (addressResponse.length > 0) {
+            alert("Adresse trouvée. La liste à été mise à jour.")
+            for (var addr of addressResponse) {
+              tab.push({
+                value: { lat: addr.geometry.coordinates[1], lng: addr.geometry.coordinates[0] },
+                label: addr.place_name
+              });
+            }
+          }
+          else {
+            alert("Aucune adresse trouvé pour ce terme.")
           }
         }
       }).catch(function (error) {
@@ -172,18 +177,23 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
             alert("Aucun Itineraire trouvé.");
           }
           else {
-            console.log(response.data.itinary)
             alert("Itineraire prêt.")
+            var num: number = response.data.itinary[0].routes[0].duration / 60;
+            var hours: number = (num / 60);
+            var rhours: number = Math.floor(hours);
+            var minutes: number = (hours - rhours) * 60;
+            var rminutes: number = Math.round(minutes);
+            tabSteps.push("durée: " + rhours + " hour(s) and " + rminutes + " minute(s).");
+            tabSteps.push("distance: " + (Math.round((response.data.itinary[0].routes[0].distance / 1000) * 100) / 100) + "km");
             for (var itinary of response.data.itinary) {
               for (var coord of itinary.routes[0].legs[0].steps) {
-                console.log(coord.maneuver)
-                if(coord.maneuver.type === 'depart' || coord.maneuver.type === 'arrive') {
-                  tabSteps.push( coord.maneuver.instruction + ".");
+                if (coord.maneuver.type === 'depart' || coord.maneuver.type === 'arrive') {
+                  tabSteps.push(coord.maneuver.instruction + ".");
 
                 }
                 else {
-                  tabSteps.push( coord.maneuver.instruction + ". Dans " + coord.maneuver.bearing_before + "m. ");
-                } 
+                  tabSteps.push(coord.maneuver.instruction + ". Dans " + coord.maneuver.bearing_before + "m. ");
+                }
                 for (var item of coord.geometry.coordinates) {
                   tabCoord.push(item);
                 }
@@ -206,13 +216,13 @@ export class MainMenu extends React.PureComponent<P & WithStyles<Styles>, S>{
       start: this.state.start,
       addresses: this.state.addresses,
       addressChoice: '',
-      tabAdressesName: []
+      tabAdressesName: [],
+      steps: this.state.steps
     });
     alert("Adresse enregistré.")
   }
 
   public fetchSteps = (tabSteps: Array<string>) => {
-    console.log("ok", tabSteps)
     this.setState({
       addressChoice: this.state.addressChoice,
       addresses: this.state.addresses,
