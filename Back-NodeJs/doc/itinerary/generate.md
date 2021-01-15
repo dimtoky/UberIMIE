@@ -1,6 +1,9 @@
-# Get All Itinerary History
+# Get All Itinerary
+On back-NodeJs file
+**Command** : npm test
+for run all itinary test
 
-Route to get all Itinerary History
+Route to get all Itinerary
 
 **URL** : `/itinerary`
 
