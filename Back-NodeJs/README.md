@@ -12,8 +12,13 @@ Rest API for UberIMIE
 
 
 #Itinerary Routes
-- [CalculateItinerary](doc/itinerary/generate.md) :  `POST /itinerary/generate/` *#TODO*
-- [Itineraries History](doc/itinerary/getAll.md) :  `GET /itinerary/history/all` *#TODO*
-- [Itinerariy History](doc/itinerary/getId.md) :  `GET /itinerary/history/:id` *#TODO*
+- [CalculateItinerary](doc/itinerary/generate.md) :  `POST /itinerary/` 
+- [Itineraries History](doc/itinerary/getAll.md) :  `GET /itinerary/history/all` 
+- [Itinerariy History](doc/itinerary/getId.md) :  `GET /itinerary/history/:id` 
+
+
+#History Routes
+- [Save Ttinerary](doc/history/create.md) :  `GET /itinerary/save/` 
+- [Load History](doc/history/load.md) :  `GET /itinerary/load/` 
 
 
